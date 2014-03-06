@@ -1,6 +1,6 @@
 # Rack::SimpleAuth
 
-TODO: Write a gem description
+Rack Middleware for HMAC Authentication
 
 ## Installation
 
@@ -16,9 +16,10 @@ Or install it yourself as:
 
     $ gem install rack-simple_auth
 
+
 ## Usage
 
-TODO: Write usage instructions here
+Uses ```X-Content-Hash``` and ```X-Public-Key``` Headers
 
 ## Contributing
 
