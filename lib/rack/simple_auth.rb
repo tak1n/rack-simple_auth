@@ -1,5 +1,7 @@
 require "rack/simple_auth/version"
-require "rack/simple_auth/middleware"
+require "rack/simple_auth/hmac"
+
+require 'json'
 
 module Rack
   module SimpleAuth

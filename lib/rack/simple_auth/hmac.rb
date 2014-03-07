@@ -1,7 +1,7 @@
 module Rack
   module SimpleAuth
-    class Middleware
-      def initialize(app)
+    class HMAC
+      def initialize(app, public_key, private_key)
         @app = app
       end
 
@@ -25,15 +25,18 @@ module Rack
           when 'GET'
             content = request.path
           when 'POST'
-            content = request.params
+            content = request.POST.to_json
+          when 'DELETE'
+            false
+          when 'PUT'
+            false
         end
 
         hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), private_key, content)
 
         puts request.request_method
+        puts "Public Key: #{public_key}"
         puts "Hash to Check: #{hash}"
-        # puts "Content: #{content}"
-        # puts "Public Key: #{public_key}"
         puts "Content Hash: #{content_hash}"
 
         if public_key == "test" && hash == content_hash
