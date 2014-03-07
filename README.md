@@ -19,7 +19,20 @@ Or install it yourself as:
 
 ## Usage
 
-Uses ```X-Content-Hash``` and ```X-Public-Key``` Headers
+Uses Authorization HTTP Header, example:
+```Authorization: ContentHash:Signature```
+
+Signature is the "Public Key"
+
+ContentHash is the HMAC encrypted Message
+
+```ruby
+map '/' do
+  use Rack::SimpleAuth::HMAC, 'signature', 'private_key'
+  run MyApplication
+end```
+
+Private Key and Signature should be served by a file which is not checked into git version control.
 
 ## Contributing
 

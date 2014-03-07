@@ -1,10 +1,10 @@
 module Rack
   module SimpleAuth
     class HMAC
-      def initialize(app, public_key, private_key)
+      def initialize(app, signature, secret)
         @app = app
-        @public_key = public_key
-        @private_key = private_key
+        @signature = signature
+        @secret = secret
       end
 
       def call(env)
@@ -18,8 +18,8 @@ module Rack
       end
 
       def valid?(request)
-        public_key = request.env['HTTP_X_PUBLIC_KEY'] # X-Public-Key
-        content_hash = request.env['HTTP_X_CONTENT_HASH'] # X-Content-Hash
+        content_hash = request.env['HTTP_AUTHORIZATION'].split(':')[0]
+        signature = request.env['HTTP_AUTHORIZATION'].split(':')[1]
 
         case request.request_method
           when 'GET'
@@ -32,13 +32,13 @@ module Rack
             false
         end
 
-        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @private_key, content)
-        # puts request.request_method
-        # puts "Public Key: #{public_key}"
-        # puts "Hash to Check: #{hash}"
-        # puts "Content Hash: #{content_hash}"
+        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, content)
+        puts request.request_method
+        puts "Signature: #{signature}"
+        puts "Hash to Check: #{hash}"
+        puts "Content Hash: #{content_hash}"
 
-        if public_key == @public_key && hash == content_hash
+        if signature == @signature && hash == content_hash
           true
         else
           false
