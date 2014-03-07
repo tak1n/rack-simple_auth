@@ -3,6 +3,8 @@ module Rack
     class HMAC
       def initialize(app, public_key, private_key)
         @app = app
+        @public_key = public_key
+        @private_key = private_key
       end
 
       def call(env)
@@ -16,10 +18,8 @@ module Rack
       end
 
       def valid?(request)
-        # @TODO: handle all rest request methods, get private key from file
         public_key = request.env['HTTP_X_PUBLIC_KEY'] # X-Public-Key
         content_hash = request.env['HTTP_X_CONTENT_HASH'] # X-Content-Hash
-        private_key = 'e249c439ed7697df2a4b045d97d4b9b7e1854c3ff8dd668c779013653913572e';
 
         case request.request_method
           when 'GET'
@@ -32,14 +32,13 @@ module Rack
             false
         end
 
-        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), private_key, content)
+        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @private_key, content)
+        # puts request.request_method
+        # puts "Public Key: #{public_key}"
+        # puts "Hash to Check: #{hash}"
+        # puts "Content Hash: #{content_hash}"
 
-        puts request.request_method
-        puts "Public Key: #{public_key}"
-        puts "Hash to Check: #{hash}"
-        puts "Content Hash: #{content_hash}"
-
-        if public_key == "test" && hash == content_hash
+        if public_key == @public_key && hash == content_hash
           true
         else
           false
