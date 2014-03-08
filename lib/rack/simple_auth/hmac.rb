@@ -36,10 +36,10 @@ module Rack
         end
 
         hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, content)
-        puts request.request_method
-        puts "Signature: #{signature}"
-        puts "Hash to Check: #{hash}"
-        puts "Content Hash: #{content_hash}"
+        # puts request.request_method
+        # puts "Signature: #{signature}"
+        # puts "Hash to Check: #{hash}"
+        # puts "Content Hash: #{content_hash}"
 
         if signature == @signature && hash == content_hash
           true
