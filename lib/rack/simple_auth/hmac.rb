@@ -18,8 +18,11 @@ module Rack
       end
 
       def valid?(request)
-        content_hash = request.env['HTTP_AUTHORIZATION'].split(':')[0]
-        signature = request.env['HTTP_AUTHORIZATION'].split(':')[1]
+        return false if request.env['HTTP_AUTHORIZATION'].nil?
+
+        auth_array = request.env['HTTP_AUTHORIZATION'].split(':')
+        content_hash = auth_array[0]
+        signature = auth_array[1]
 
         case request.request_method
           when 'GET'
