@@ -5,6 +5,12 @@ require 'json'
 
 module Rack
   module SimpleAuth
-    # Your code goes here...
+  	class << self
+      # Method to return Gem Root Dir
+      # @return [String] Gem Root Folder
+      def root
+        ::File.dirname(::File.dirname(::File.expand_path('..', __FILE__)))
+      end
+    end
   end
 end

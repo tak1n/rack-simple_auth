@@ -26,18 +26,17 @@ module Rack
 
         case request.request_method
           when 'GET'
-            content = request.path
+            content = { 'method' => request.request_method, 'data' => request.path }.to_json
           when 'POST'
-            content = request.POST.to_json
+            content = { 'method' => request.request_method, 'data' => request.POST }.to_json
           when 'DELETE'
-            false
+            content = { 'method' => request.request_method, 'data' => request.path }.to_json
           when 'PUT'
-            false
+            content = { 'method' => request.request_method, 'data' => request.POST }.to_json
         end
 
         hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, content)
-        # puts request.request_method
-        # puts "Signature: #{signature}"
+        # puts content
         # puts "Hash to Check: #{hash}"
         # puts "Content Hash: #{content_hash}"
 
