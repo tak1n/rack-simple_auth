@@ -49,8 +49,28 @@ map '/' do
   run MyApplication
 end
 ```
+You can specify which 'content' will be used for HMAC encryption via the config hash:
 
-Private Key and Signature should be served by a file which is not checked into git version control.
+For GET and POST params in union use 'params' ('POST' => 'params'):
+
+Post Request with post parameter name = Jon and lastname = Doe
+
+'content' will be:
+```ruby
+params = {'name' => 'Jon', 'lastname' => 'Doe'}
+{ 'method' => 'POST', 'data' => params }.to_json
+```
+
+For path encryption use 'path', example:
+
+GET Request to '/'
+
+'content' will be:
+```ruby
+{ 'method' => 'GET', 'data' => '/' }.to_json
+```
+
+Note: Private Key and Signature should be served by a file which is not checked into git version control.
 
 ## Contributing
 
