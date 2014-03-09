@@ -35,7 +35,8 @@ ContentHash is the HMAC encrypted Message
 map '/' do
   use Rack::SimpleAuth::HMAC, 'signature', 'private_key'
   run MyApplication
-end```
+end
+```
 
 Private Key and Signature should be served by a file which is not checked into git version control.
 
