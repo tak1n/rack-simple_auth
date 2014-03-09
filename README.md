@@ -25,16 +25,27 @@ Or install it yourself as:
 
 ## Usage
 
+### HMAC Authorization
+
 Uses Authorization HTTP Header, example:
 ```Authorization: ContentHash:Signature```
 
-Signature is the "Public Key"
+- Signature is the "Public Key"
+- ContentHash is the HMAC encrypted Message
 
-ContentHash is the HMAC encrypted Message
+#### Use Middleware:
 
 ```ruby
+config = {
+  'GET' => 'path',
+  'POST' => 'params',
+  'DELETE' => 'path',
+  'PUT' => 'path',
+  'PATCH' => 'path'
+}
+
 map '/' do
-  use Rack::SimpleAuth::HMAC, 'signature', 'private_key'
+  use Rack::SimpleAuth::HMAC, 'signature', 'private_key', config
   run MyApplication
 end
 ```

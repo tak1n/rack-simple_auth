@@ -2,8 +2,8 @@ require 'rack/lobster'
 require 'rack/simple_auth'
 
 config = {
-  'GET' => 'path',
-  'POST' => 'params',
+  'GET' => 'pathasdf',
+  'POST' => 'paramas',
   'DELETE' => 'path',
   'PUT' => 'path',
   'PATCH' => 'path'

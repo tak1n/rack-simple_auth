@@ -64,16 +64,31 @@ class HMACTest < MiniTest::Unit::TestCase
   end
 
   def test_put_with_wrong_auth_header
-    put '/', { 'name' => 'Bensn' }, 'HTTP_AUTHORIZATION' => 'wrong_header'
+    put '/', {}, 'HTTP_AUTHORIZATION' => 'wrong_header'
     assert_equal(401, last_response.status, 'Wrong HTTP_AUTHORIZATION Header should receive 401')
   end
 
-  def test_post_with_right_auth_header
-    params = { 'name' => 'Bensn' }
-    content = { 'method' => 'PUT', 'data' => params }.to_json
+  def test_put_with_right_auth_header
+    uri = '/'
+    content = { 'method' => 'PUT', 'data' => uri }.to_json
     hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, content)
 
-    put '/', params, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
+    put uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
+
+    assert_equal(200, last_response.status, 'Authorized Request should receive 200')
+  end
+
+  def test_patch_with_wrong_auth_header
+    patch '/', {}, 'HTTP_AUTHORIZATION' => 'wrong_header'
+    assert_equal(401, last_response.status, 'Wrong HTTP_AUTHORIZATION Header should receive 401')
+  end
+
+  def test_patch_with_right_auth_header
+    uri = '/'
+    content = { 'method' => 'PATCH', 'data' => uri }.to_json
+    hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, content)
+
+    patch uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
     assert_equal(200, last_response.status, 'Authorized Request should receive 200')
   end
