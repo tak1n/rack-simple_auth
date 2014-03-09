@@ -16,6 +16,12 @@ Or install it yourself as:
 
     $ gem install rack-simple_auth
 
+## Gem Status
+
+[![Build Status](https://travis-ci.org/Benny1992/rack-simple_auth.png?branch=master)](https://travis-ci.org/Benny1992/rack-simple_auth)
+[![Coverage Status](https://coveralls.io/repos/Benny1992/rack-simple_auth/badge.png?branch=master)](https://coveralls.io/r/Benny1992/rack-simple_auth?branch=master)
+[![GitHub version](https://badge.fury.io/gh/benny1992%2Frack-simple_auth.png)](http://badge.fury.io/gh/benny1992%2Frack-simple_auth)
+[![Coverage Status](https://coveralls.io/repos/Benny1992/rack-simple_auth/badge.png?branch=master)](https://coveralls.io/r/Benny1992/rack-simple_auth?branch=master)
 
 ## Usage
 
