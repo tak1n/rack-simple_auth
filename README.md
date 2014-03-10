@@ -1,6 +1,8 @@
 # Rack::SimpleAuth
 
-Rack Middleware for HMAC Authentication
+Rack::SimpleAuth will contain different Authentication Class Middlewares
+
+Until now only HMAC is implemented...
 
 ## Installation
 
@@ -74,5 +76,6 @@ message = { 'method' => 'GET', 'data' => '/get/user?name=rack' }.to_json
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
 
 
