@@ -33,7 +33,7 @@ Uses Authorization HTTP Header, example:
 - Signature is the "Public Key"
 - ContentHash is the HMAC encrypted Message
 
-#### Use Middleware:
+#### Basic Usage:
 
 ```ruby
 config = {
@@ -49,28 +49,23 @@ map '/' do
   run MyApplication
 end
 ```
-You can specify which 'content' will be used for HMAC encryption via the config hash:
-
-For GET and POST params in union use 'params' ('POST' => 'params'):
-
-Post Request with post parameter name = Jon and lastname = Doe
-
-'content' will be:
-```ruby
-params = {'name' => 'Jon', 'lastname' => 'Doe'}
-{ 'method' => 'POST', 'data' => params }.to_json
-```
-
-For path encryption use 'path', example:
-
-GET Request to '/'
-
-'content' will be:
-```ruby
-{ 'method' => 'GET', 'data' => '/' }.to_json
-```
 
 Note: Private Key and Signature should be served by a file which is not checked into git version control.
+
+#### Config Hash
+
+Via the config hash you are able to define the 'data' for each request method.<br />
+This data + HTTP Methodname is your Message what will be encrypted.<br />
+
+For example ```GET '/get/user?name=rack'```:
+```ruby
+config = { 'GET => 'path' }
+```
+
+The Message what will be HMAC encrypted is:
+```ruby
+message = { 'method' => 'GET', 'data' => '/get/user?name=rack' }.to_json
+```
 
 ## Contributing
 
@@ -79,3 +74,4 @@ Note: Private Key and Signature should be served by a file which is not checked 
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+

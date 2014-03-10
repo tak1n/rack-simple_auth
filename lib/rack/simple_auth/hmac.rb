@@ -29,29 +29,29 @@ module Rack
       # checks for valid HMAC Request
       # @param [Rack::Request] request [current Request]
       # @return [boolean] ValidationStatus [If authorized returns true, else false]
-      def valid?(request)  
+      def valid?(request)
         return false if request.env['HTTP_AUTHORIZATION'].nil?
 
         auth_array = request.env['HTTP_AUTHORIZATION'].split(':')
-        content_hash = auth_array[0]
+        message_hash = auth_array[0]
         signature = auth_array[1]
 
-        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, content(request))
+        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, message(request))
         # puts request.request_method
         # puts "Hash to Check: #{hash}"
-        # puts "Content Hash: #{content_hash}"
+        # puts "Message Hash: #{message_hash}"
 
-        if signature == @signature && hash == content_hash
+        if signature == @signature && hash == message_hash
           true
         else
           false
         end
       end
 
-      # Get Content for current Request
+      # Get Message for current Request
       # @param [Rack::Request] request [current Request]
-      # @return [Hash] content [content which will be encrypted]
-      def content(request)
+      # @return [Hash] message [message which will be encrypted]
+      def message(request)
         case request.request_method
         when 'GET'
           return { 'method' => request.request_method, 'data' => request_data(request, @config) }.to_json

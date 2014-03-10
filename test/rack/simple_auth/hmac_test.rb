@@ -25,8 +25,8 @@ class HMACTest < MiniTest::Unit::TestCase
 
   def test_get_with_right_auth_header
     uri = '/'
-    content = { 'method' => 'GET', 'data' => uri }.to_json
-    hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, content)
+    message = { 'method' => 'GET', 'data' => uri }.to_json
+    hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, message)
 
     get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
@@ -40,8 +40,8 @@ class HMACTest < MiniTest::Unit::TestCase
 
   def test_post_with_right_auth_header
     params = { 'name' => 'Bensn' }
-    content = { 'method' => 'POST', 'data' => params }.to_json
-    hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, content)
+    message = { 'method' => 'POST', 'data' => params }.to_json
+    hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, message)
 
     post '/', params, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
@@ -55,8 +55,8 @@ class HMACTest < MiniTest::Unit::TestCase
 
   def test_delete_with_right_auth_header
     uri = '/'
-    content = { 'method' => 'DELETE', 'data' => uri }.to_json
-    hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, content)
+    message = { 'method' => 'DELETE', 'data' => uri }.to_json
+    hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, message)
 
     delete uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
@@ -70,8 +70,8 @@ class HMACTest < MiniTest::Unit::TestCase
 
   def test_put_with_right_auth_header
     uri = '/'
-    content = { 'method' => 'PUT', 'data' => uri }.to_json
-    hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, content)
+    message = { 'method' => 'PUT', 'data' => uri }.to_json
+    hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, message)
 
     put uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
@@ -85,8 +85,8 @@ class HMACTest < MiniTest::Unit::TestCase
 
   def test_patch_with_right_auth_header
     uri = '/'
-    content = { 'method' => 'PATCH', 'data' => uri }.to_json
-    hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, content)
+    message = { 'method' => 'PATCH', 'data' => uri }.to_json
+    hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, message)
 
     patch uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
