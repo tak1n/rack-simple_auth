@@ -69,9 +69,10 @@ message = { 'method' => 'GET', 'data' => '/get/user?name=rack' }.to_json
 
 ## Contributing
 
-1. Fork it ( http://github.com/<my-github-username>/rack-simple_auth/fork )
+1. Fork it ( http://github.com/benny1992/rack-simple_auth/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
 
