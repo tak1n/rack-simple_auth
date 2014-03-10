@@ -30,10 +30,10 @@ Or install it yourself as:
 ### HMAC Authorization
 
 Uses Authorization HTTP Header, example:
-```Authorization: ContentHash:Signature```
+```Authorization: MessageHash:Signature```
 
 - Signature is the "Public Key"
-- ContentHash is the HMAC encrypted Message
+- MessageHash is the HMAC encrypted Message
 
 #### Basic Usage:
 
@@ -69,6 +69,7 @@ The Message what will be HMAC encrypted is:
 message = { 'method' => 'GET', 'data' => '/get/user?name=rack' }.to_json
 ```
 
+
 ## Contributing
 
 1. Fork it ( http://github.com/benny1992/rack-simple_auth/fork )
@@ -76,6 +77,7 @@ message = { 'method' => 'GET', 'data' => '/get/user?name=rack' }.to_json
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
 
 
 
