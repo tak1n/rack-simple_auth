@@ -60,11 +60,13 @@ Via the config hash you are able to define the 'data' for each request method.<b
 This data + HTTP Methodname is your Message what will be encrypted.<br />
 
 For example ```GET '/get/user?name=rack'```:
+
 ```ruby
 config = { 'GET => 'path' }
 ```
 
 The Message what will be HMAC encrypted is:
+
 ```ruby
 message = { 'method' => 'GET', 'data' => '/get/user?name=rack' }.to_json
 ```
