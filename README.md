@@ -62,7 +62,7 @@ This data + HTTP Methodname is your Message what will be encrypted.<br />
 For example ```GET '/get/user?name=rack'```:
 
 ```ruby
-config = { 'GET => 'path' }
+config = { 'GET' => 'path' }
 ```
 
 The Message what will be HMAC encrypted is:
@@ -72,6 +72,8 @@ message = { 'method' => 'GET', 'data' => '/get/user?name=rack' }.to_json
 ```
 
 
+
+
 ## Contributing
 
 1. Fork it ( http://github.com/benny1992/rack-simple_auth/fork )
@@ -79,6 +81,8 @@ message = { 'method' => 'GET', 'data' => '/get/user?name=rack' }.to_json
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+
 
 
 
