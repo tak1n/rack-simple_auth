@@ -37,9 +37,6 @@ module Rack
         signature = auth_array[1]
 
         hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, message(request))
-        # puts request.request_method
-        # puts "Hash to Check: #{hash}"
-        # puts "Message Hash: #{message_hash}"
 
         if signature == @signature && hash == message_hash
           true
