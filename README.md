@@ -29,6 +29,12 @@ Or install it yourself as:
 
 ### HMAC Authorization
 
+HMAC should be used for communication between website backend and api server/controller/whatever..
+For usage between Server <-> Client a sniffer could easily extract the signature/public key and 
+the encrypted message which is for now the same for the same request (see TODO implement timestamp).
+
+With these 2 informations a "secure" backend could be easily seen public...
+
 Uses Authorization HTTP Header, example:
 ```Authorization: MessageHash:Signature```
 
@@ -100,3 +106,4 @@ He got the encrypted message for the specific request && signature -> No securit
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
