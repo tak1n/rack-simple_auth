@@ -82,6 +82,8 @@ module Rack
         end
       end
 
+      # Log to @logpath if request is unathorized
+      # @param [Rack::Request] request [current Request]
       def log(request)
         if @logpath
           path = request.path
@@ -97,6 +99,8 @@ module Rack
           end
         end
       end
+
+      private :log, :request_data, :message, :valid?
     end
   end
 end
