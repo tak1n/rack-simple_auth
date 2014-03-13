@@ -1,3 +1,5 @@
+ENV['RACK_ENV']='test'
+
 require 'simplecov'
 require 'coveralls'
 
@@ -39,3 +41,7 @@ end
 
 Rack::SimpleAuth.testapp = Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/config.ru").first
 Rack::SimpleAuth.failapp = Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/config_fail.ru").first
+
+@logpath = "#{File.expand_path("..", __FILE__)}/logs"
+system("mkdir #{@logpath}")
+

@@ -6,8 +6,8 @@ config = {
   'POST' => 'params',
   'DELETE' => 'path',
   'PUT' => 'path',
-  'PATCH' => 'path'
+  'PATCH' => 'path',
 }
 
-use Rack::SimpleAuth::HMAC, 'test_signature', 'test_secret', config
+use Rack::SimpleAuth::HMAC, 'test_signature', 'test_secret', config, "#{File.expand_path('..', __FILE__)}/logs"
 run Rack::Lobster.new
