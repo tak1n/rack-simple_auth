@@ -47,12 +47,13 @@ config = {
 }
 
 map '/' do
-  use Rack::SimpleAuth::HMAC, 'signature', 'private_key', config
+  use Rack::SimpleAuth::HMAC, 'signature', 'private_key', config, '/path/to/log/file'
   run MyApplication
 end
 ```
 
 Note: Private Key and Signature should be served by a file which is not checked into git version control.
+
 
 #### Config Hash
 
@@ -71,6 +72,19 @@ The Message what will be HMAC encrypted is:
 message = { 'method' => 'GET', 'data' => '/get/user?name=rack' }.to_json
 ```
 
+#### Logging
+
+With the 4th parameter for Rack::SimpleAuth::HMAC you can define a destination where the internal #log method should write to.
+
+The Logging will only be triggered when a path is defined (leave 4th param for disable logging) and a request is not authorized!
+
+It contains following information:
+
+- HTTP_AUTHORIZATION Header
+- Config for the specific Request Method (GET => path etc ...)
+- The Encrypted Message which was expected
+- The Signature which was expected
+
 
 
 
@@ -81,6 +95,7 @@ message = { 'method' => 'GET', 'data' => '/get/user?name=rack' }.to_json
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
 
 
 
