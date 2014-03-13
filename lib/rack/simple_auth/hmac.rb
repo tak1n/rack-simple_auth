@@ -7,11 +7,12 @@ module Rack
       # @param [Rack Application] app [next middleware or rack app which gets called]
       # @param [String] signature [Public Signature]
       # @param [String] secret [Secret used for Message Encryption]
-      def initialize(app, signature, secret, config)
+      def initialize(app, signature, secret, config, logpath = nil)
         @app = app
         @signature = signature
         @secret = secret
         @config = config
+        @logpath = logpath
       end
 
       # call Method for Rack Middleware/Application
@@ -30,7 +31,11 @@ module Rack
       # @param [Rack::Request] request [current Request]
       # @return [boolean] ValidationStatus [If authorized returns true, else false]
       def valid?(request)
-        return false if request.env['HTTP_AUTHORIZATION'].nil?
+        if request.env['HTTP_AUTHORIZATION'].nil?
+          log(request, nil)
+
+          return false
+        end
 
         auth_array = request.env['HTTP_AUTHORIZATION'].split(':')
         message_hash = auth_array[0]
@@ -41,6 +46,8 @@ module Rack
         if signature == @signature && hash == message_hash
           true
         else
+          log(request, hash)
+
           false
         end
       end
@@ -72,6 +79,22 @@ module Rack
           request.send(config[request.request_method].to_sym)
         else
           fail "Not a valid option #{config[request.request_method]} - Use either params or path"
+        end
+      end
+
+      def log(request, hash)
+        if @logpath
+          path = request.path
+          method = request.request_method
+
+          log = "#{Time.new} - #{method} #{path} - 400 Unauthorized - HTTP_AUTHORIZATION: #{request.env['HTTP_AUTHORIZATION']}\n"
+          log << "Auth Message Config: #{@config[request.request_method]}\n"
+          log << "Auth Encrypted Message: #{hash}\n"
+          log << "Auth Signature: #{@signature}\n"
+
+          open("#{@logpath}/#{ENV['RACK_ENV']}_error.log", 'a') do |f|
+            f << "#{log}\n"
+          end
         end
       end
     end
