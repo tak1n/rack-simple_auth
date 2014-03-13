@@ -14,6 +14,10 @@ namespace :test do
   # Cucumber::Rake::Task.new(:feature) do |t|
     # t.cucumber_opts = "features --format pretty"
   # end
+  
+  task :cleanup do
+    system("rm -rf #{File.expand_path('../../', __FILE__)}/test/logs")
+  end
 end
 
 
