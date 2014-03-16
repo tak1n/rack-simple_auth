@@ -37,9 +37,9 @@ HMAC should be used for communication between website backend and api server/con
 ~~For usage between Server <-> Client a sniffer could easily extract the signature/public key and 
 the encrypted message which is for now the same for the same request (see TODO implement timestamp).~~
 
-In version 0.0.5 the timestamp has been added to the msg which will be encrypted, also the possibility to configure the allowed delay a request can have has been added.
+~~With these 2 informations a "secure" backend could be easily seen public...~~
 
-With these 2 informations a "secure" backend could be easily seen public...
+In version 0.0.5 the timestamp has been added to the msg which will be encrypted, also the possibility to configure the allowed delay a request can have has been added.
 
 Uses Authorization HTTP Header, example:
 ```Authorization: MessageHash:Signature```
@@ -113,6 +113,7 @@ It contains following information:
 - The Signature which was expected
 
 
+
 ## TODO 
 
 Add Timestamp to encryption..
@@ -128,6 +129,7 @@ He got the encrypted message for the specific request && signature -> No securit
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
 
 
 
