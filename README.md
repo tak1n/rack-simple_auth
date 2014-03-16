@@ -116,11 +116,12 @@ It contains following information:
 
 ## TODO 
 
-Add Timestamp to encryption..
+~~Add Timestamp to encryption..
 
 For now a sniffer could track a successfull request to the server and extract the HTTP_AUTHORIZATION HEADER for this request.
 
-He got the encrypted message for the specific request && signature -> No security anymore...
+He got the encrypted message for the specific request && signature -> No security anymore...~~
+
 
 ## Contributing
 
@@ -129,6 +130,7 @@ He got the encrypted message for the specific request && signature -> No securit
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
 
 
 
