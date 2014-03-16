@@ -32,6 +32,8 @@ module Rack
       # @param [Rack::Request] request [current Request]
       # @return [boolean] ValidationStatus [If authorized returns true, else false]
       def valid?(request)
+        @hash_array = build_allowed_messages(request)
+
         if request.env['HTTP_AUTHORIZATION'].nil?
           log(request)
 
@@ -41,8 +43,6 @@ module Rack
         auth_array = request.env['HTTP_AUTHORIZATION'].split(':')
         message_hash = auth_array[0]
         signature = auth_array[1]
-
-        @hash_array = build_allowed_messages(request)
 
         if signature == @signature && @hash_array.include?(message_hash)
           true
@@ -106,10 +106,12 @@ module Rack
 
           log = "#{Time.new} - #{method} #{path} - 400 Unauthorized - HTTP_AUTHORIZATION: #{request.env['HTTP_AUTHORIZATION']}\n"
           log << "Auth Message Config: #{@config[request.request_method]}\n"
-          log << "Allowed Encrypted Messages:\n"
 
-          @hash_array.each do |hash|
-            log << "#{hash}\n"
+          if @hash_array
+            log << "Allowed Encrypted Messages:\n"
+            @hash_array.each do |hash|
+              log << "#{hash}\n"
+            end
           end
 
           log << "Auth Signature: #{@signature}"
