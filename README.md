@@ -25,6 +25,7 @@ Or install it yourself as:
 [![Gem Version](https://badge.fury.io/rb/rack-simple_auth.png)](http://badge.fury.io/rb/rack-simple_auth)
 [![Dependency Status](https://gemnasium.com/Benny1992/rack-simple_auth.png)](https://gemnasium.com/Benny1992/rack-simple_auth)
 
+
 ## Usage
 
 ### HMAC Authorization
@@ -108,5 +109,6 @@ He got the encrypted message for the specific request && signature -> No securit
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
 
 
