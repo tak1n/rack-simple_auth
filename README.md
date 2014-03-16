@@ -21,9 +21,10 @@ Or install it yourself as:
 ## Gem Status
 
 [![Build Status](https://travis-ci.org/Benny1992/rack-simple_auth.png?branch=master)](https://travis-ci.org/Benny1992/rack-simple_auth)
-[![Coverage Status](https://coveralls.io/repos/Benny1992/rack-simple_auth/badge.png?branch=master)](https://coveralls.io/r/Benny1992/rack-simple_auth?branch=master)
+<a href='https://coveralls.io/r/Benny1992/rack-simple_auth?branch=master'><img src='https://coveralls.io/repos/Benny1992/rack-simple_auth/badge.png?branch=master' alt='Coverage Status' /></a>
 [![Gem Version](https://badge.fury.io/rb/rack-simple_auth.png)](http://badge.fury.io/rb/rack-simple_auth)
 [![Dependency Status](https://gemnasium.com/Benny1992/rack-simple_auth.png)](https://gemnasium.com/Benny1992/rack-simple_auth)
+
 
 
 ## Usage
@@ -109,6 +110,7 @@ He got the encrypted message for the specific request && signature -> No securit
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
 
 
 
