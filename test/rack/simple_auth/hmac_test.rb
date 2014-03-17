@@ -26,7 +26,7 @@ class HMACTest < MiniTest::Unit::TestCase
   def test_get_with_right_auth_header
     uri = '/'
     message = { 'method' => 'GET', 'date' => Time.now.to_i, 'data' => uri }.to_json
-    hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, message)
+    hash = OpenSSL::HMAC.hexdigest(Rack::SimpleAuth.send(:digest, 'sha256'), @secret, message)
 
     get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
@@ -36,7 +36,7 @@ class HMACTest < MiniTest::Unit::TestCase
   def test_get_with_delay_in_tolerance_range
     uri = '/'
     message = { 'method' => 'GET', 'date' => Time.now.to_i - 2, 'data' => uri }.to_json
-    hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, message)
+    hash = OpenSSL::HMAC.hexdigest(Rack::SimpleAuth.send(:digest, 'sha256'), @secret, message)
 
     get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
@@ -46,7 +46,7 @@ class HMACTest < MiniTest::Unit::TestCase
   def test_get_with_too_big_delay
     uri = '/'
     message = { 'method' => 'GET', 'date' => Time.now.to_i - 50, 'data' => uri }.to_json
-    hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, message)
+    hash = OpenSSL::HMAC.hexdigest(Rack::SimpleAuth.send(:digest, 'sha256'), @secret, message)
 
     get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
@@ -61,7 +61,7 @@ class HMACTest < MiniTest::Unit::TestCase
   def test_post_with_right_auth_header
     params = { 'name' => 'Bensn' }
     message = { 'method' => 'POST', 'date' => Time.now.to_i, 'data' => params }.to_json
-    hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, message)
+    hash = OpenSSL::HMAC.hexdigest(Rack::SimpleAuth.send(:digest, 'sha256'), @secret, message)
 
     post '/', params, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
@@ -76,7 +76,7 @@ class HMACTest < MiniTest::Unit::TestCase
   def test_delete_with_right_auth_header
     uri = '/'
     message = { 'method' => 'DELETE', 'date' => Time.now.to_i, 'data' => uri }.to_json
-    hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, message)
+    hash = OpenSSL::HMAC.hexdigest(Rack::SimpleAuth.send(:digest, 'sha256'), @secret, message)
 
     delete uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
@@ -91,7 +91,7 @@ class HMACTest < MiniTest::Unit::TestCase
   def test_put_with_right_auth_header
     uri = '/'
     message = { 'method' => 'PUT', 'date' => Time.now.to_i, 'data' => uri }.to_json
-    hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, message)
+    hash = OpenSSL::HMAC.hexdigest(Rack::SimpleAuth.send(:digest, 'sha256'), @secret, message)
 
     put uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
@@ -106,7 +106,7 @@ class HMACTest < MiniTest::Unit::TestCase
   def test_patch_with_right_auth_header
     uri = '/'
     message = { 'method' => 'PATCH', 'date' => Time.now.to_i, 'data' => uri }.to_json
-    hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, message)
+    hash = OpenSSL::HMAC.hexdigest(Rack::SimpleAuth.send(:digest, 'sha256'), @secret, message)
 
     patch uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
