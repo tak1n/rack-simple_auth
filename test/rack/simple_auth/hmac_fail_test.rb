@@ -14,9 +14,9 @@ class HMACFailTest < MiniTest::Unit::TestCase
   end
 
   def test_fail
-  	uri = '/'
+    uri = '/'
     content = { 'method' => 'GET', 'data' => uri }.to_json
-    hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha256'), @secret, content)
+    hash = OpenSSL::HMAC.hexdigest(Rack::SimpleAuth.send(:digest, 'sha256'), @secret, content)
 
     assert_raises(RuntimeError) { get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}" }
   end
