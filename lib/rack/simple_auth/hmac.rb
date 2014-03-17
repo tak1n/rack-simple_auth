@@ -66,8 +66,9 @@ module Rack
         hash_array
       end
 
-      # Get Message for current Request
+      # Get Message for current Request and delay
       # @param [Rack::Request] request [current Request]
+      # @param [Fixnum] delay [delay in timestamp format]
       # @return [Hash] message [message which will be encrypted]
       def message(request, delay = 0)
         date = Time.now.to_i + delay
