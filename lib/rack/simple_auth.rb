@@ -1,6 +1,6 @@
 require 'rack/simple_auth/version'
 require 'rack/simple_auth/hmac'
-require 'rack/simple_auth/helper'
+require 'rack/simple_auth/simple_auth_helper'
 
 require 'json'
 
