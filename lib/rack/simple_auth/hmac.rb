@@ -60,7 +60,7 @@ module Rack
         hash_array = []
 
         (-(@tolerance)..@tolerance).each do |i|
-          hash_array << OpenSSL::HMAC.hexdigest(Rack::SimpleAuth::Helper.digest('sha256'), @secret, message(request, i))
+          hash_array << OpenSSL::HMAC.hexdigest(Rack::SimpleAuth.digest('sha256'), @secret, message(request, i))
         end
 
         hash_array
