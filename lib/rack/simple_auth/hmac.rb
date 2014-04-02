@@ -7,13 +7,14 @@ module Rack
       # @param [Rack Application] app [next middleware or rack app which gets called]
       # @param [String] signature [Public Signature]
       # @param [String] secret [Secret used for Message Encryption]
-      def initialize(app, signature, secret, config, logpath = nil)
+      def initialize(app, config)
         @app = app
-        @signature = signature
-        @secret = secret
-        @config = config
+        @signature = config['signature'] || ''
+        @secret = config['secret'] || ''
         @tolerance = config['tolerance'] || 0 # 0 if tolerance not set in config hash
-        @logpath = logpath
+        @logpath = config['logpath']
+
+        @config = config
       end
 
       # call Method for Rack Middleware/Application

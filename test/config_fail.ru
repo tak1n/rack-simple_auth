@@ -6,8 +6,10 @@ config = {
   'POST' => 'paramas',
   'DELETE' => 'path',
   'PUT' => 'path',
-  'PATCH' => 'path'
+  'PATCH' => 'path',
+  'signature' => 'test_signature',
+  'secret' => 'test_secret'
 }
 
-use Rack::SimpleAuth::HMAC, 'test_signature', 'test_secret', config
+use Rack::SimpleAuth::HMAC, config
 run Rack::Lobster.new
