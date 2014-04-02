@@ -56,11 +56,14 @@ config = {
   'DELETE' => 'path',
   'PUT' => 'path',
   'PATCH' => 'path'
-  'tolerance' => 2
+  'tolerance' => 2,
+  'signature' => 'signature',
+  'secret' => 'secret',
+  'logpath' => '/path/to/log/file'
 }
 
 map '/' do
-  use Rack::SimpleAuth::HMAC, 'signature', 'private_key', config, '/path/to/log/file'
+  use Rack::SimpleAuth::HMAC, config
   run MyApplication
 end
 ```
@@ -69,7 +72,9 @@ Note: Private Key and Signature should be served by a file which is not checked 
 
 
 
+
 #### Config Hash
+
 
 Via the config hash you are able to define the 'data' for each request method.<br />
 This data + HTTP Methodname is your Message what will be encrypted.<br />
@@ -77,7 +82,13 @@ This data + HTTP Methodname is your Message what will be encrypted.<br />
 For example ```GET '/get/user?name=rack'```:
 
 ```ruby
-config = { 'GET' => 'path' }
+config = {
+    .
+    .
+  'GET' => 'path'
+    .
+    .
+ }
 ```
 
 The Message what will be HMAC encrypted is:
@@ -101,16 +112,17 @@ Notice: For a set tolerance a Encrypted Message array will be generated and comp
 
 #### Logging
 
-With the 4th parameter for Rack::SimpleAuth::HMAC you can define a destination where the internal #log method should write to.
+With config['logpath']  you can define a destination where the internal #log method should write to.
 
-The Logging will only be triggered when a path is defined (leave 4th param for disable logging) and a request is not authorized!
+The Logging will only be triggered when a path is defined (leave config['logpath'] for disable logging) and a request is not authorized!
 
 It contains following information:
 
 - HTTP_AUTHORIZATION Header
 - Config for the specific Request Method (GET => path etc ...)
-- The Encrypted Message which was expected
+- The Encrypted Message Array which was expected
 - The Signature which was expected
+
 
 
 
@@ -124,6 +136,7 @@ It contains following information:
 
 
 
+
 ## Contributing
 
 1. Fork it ( http://github.com/benny1992/rack-simple_auth/fork )
@@ -131,6 +144,7 @@ It contains following information:
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
 
 
 
