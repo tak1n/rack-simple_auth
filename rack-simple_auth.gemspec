@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["klotz.benjamin@yahoo.de"]
   spec.summary       = %q{SimpleAuth HMAC authentication}
   spec.description   = spec.summary
-  spec.homepage      = "http://www.bennyklotz.at"
+  spec.homepage      = "https://github.com/Benny1992/rack-simple_auth"
   spec.license       = "MIT"
 
   spec.files = File.read(File.expand_path('../MANIFEST', __FILE__)).split("\n")
