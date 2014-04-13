@@ -5,14 +5,14 @@ module Rack
     class HMAC
       # Constructor for Rack Middleware (passing the rack stack)
       # @param [Rack Application] app [next middleware or rack app which gets called]
-      # @param [String] signature [Public Signature]
-      # @param [String] secret [Secret used for Message Encryption]
+      # @param [Hash] config [config hash where tolerance, secret, signature etc.. are set]
       def initialize(app, config)
         @app = app
         @signature = config['signature'] || ''
         @secret = config['secret'] || ''
         @tolerance = config['tolerance'] || 0 # 0 if tolerance not set in config hash
         @logpath = config['logpath']
+        @steps = config['steps'] || 1
 
         @config = config
       end
@@ -60,7 +60,8 @@ module Rack
       def build_allowed_messages(request)
         hash_array = []
 
-        (-(@tolerance)..@tolerance).each do |i|
+        (-(@tolerance)..@tolerance).step(@steps) do |i|
+          i = i.round(2)
           hash_array << OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message(request, i))
         end
 
@@ -73,6 +74,11 @@ module Rack
       # @return [Hash] message [message which will be encrypted]
       def message(request, delay = 0)
         date = Time.now.to_i + delay
+
+        if delay.eql?(0.0)
+          date = date.to_i
+        end
+
         case request.request_method
         when 'GET'
           return { 'method' => request.request_method, 'date' => date, 'data' => request_data(request, @config) }.to_json
