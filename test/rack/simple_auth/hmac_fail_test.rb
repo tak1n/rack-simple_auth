@@ -5,7 +5,7 @@ class HMACFailTest < MiniTest::Unit::TestCase
   include Rack::Test::Methods
 
   def setup
-  	@secret = 'test_secret'
+    @secret = 'test_secret'
     @signature = 'test_signature'
   end
 
