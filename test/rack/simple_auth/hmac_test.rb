@@ -35,7 +35,7 @@ class HMACTest < MiniTest::Unit::TestCase
 
   def test_get_with_delay_in_tolerance_range
     uri = '/'
-    message = { 'method' => 'GET', 'date' => Time.now.to_i - 2, 'data' => uri }.to_json
+    message = { 'method' => 'GET', 'date' => Time.now.to_i - 0.5, 'data' => uri }.to_json
     hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
 
     get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
@@ -51,6 +51,16 @@ class HMACTest < MiniTest::Unit::TestCase
     get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
     assert_equal(401, last_response.status, 'Delay not in tolerance range should receive 401')
+  end
+
+  def test_get_with_wrong_step
+    uri = '/'
+    message = { 'method' => 'GET', 'date' => Time.now.to_i + 0.03, 'data' => uri }.to_json
+    hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
+
+    get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
+
+    assert_equal(401, last_response.status, 'Message with wrong step should receive 401')
   end
 
   def test_post_with_wrong_auth_header
@@ -90,7 +100,7 @@ class HMACTest < MiniTest::Unit::TestCase
 
   def test_put_with_right_auth_header
     uri = '/'
-    message = { 'method' => 'PUT', 'date' => Time.now.to_i, 'data' => uri }.to_json
+    message = { 'method' => 'PUT', 'date' => Time.now.to_i , 'data' => uri }.to_json
     hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
 
     put uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"

@@ -7,10 +7,11 @@ config = {
   'DELETE' => 'path',
   'PUT' => 'path',
   'PATCH' => 'path',
-  'tolerance' => 2,
+  'tolerance' => 1,
   'signature' => 'test_signature',
   'secret' => 'test_secret',
-  'logpath' => "#{File.expand_path('..', __FILE__)}/logs"
+  'logpath' => "#{File.expand_path('..', __FILE__)}/logs",
+  'steps' => 0.1
 }
 
 use Rack::SimpleAuth::HMAC, config
