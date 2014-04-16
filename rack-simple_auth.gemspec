@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.license       = "MIT"
 
   spec.post_install_message = 'Please report any issues at: ' \
-      'https://github.com/Benny1992/rack-blogengine/issues/new'
+      'https://github.com/Benny1992/rack-simple_auth/issues/new'
 
   spec.files = File.read(File.expand_path('../MANIFEST', __FILE__)).split("\n")
   spec.require_paths = ["lib"]
