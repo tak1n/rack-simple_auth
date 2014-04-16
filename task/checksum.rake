@@ -1,3 +1,5 @@
+require 'digest/sha2'
+
 desc 'Creates a SHA512 checksum of the current version'
 task :checksum do
   checksums = File.expand_path('../../checksum', __FILE__)
