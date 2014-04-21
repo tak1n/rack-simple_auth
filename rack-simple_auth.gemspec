@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "rack-simple_auth"
   spec.version       = Rack::SimpleAuth::VERSION
   spec.authors       = ["Benny1992"]
-  spec.email         = ["klotz.benjamin@yahoo.de"]
+  spec.email         = ["r3qnbenni@gmail.com"]
   spec.summary       = %q{SimpleAuth HMAC authentication}
   spec.description   = spec.summary
   spec.homepage      = "https://github.com/Benny1992/rack-simple_auth"
