@@ -14,6 +14,12 @@ module Rack
         @logpath = config['logpath']
         @steps = config['steps'] || 1
 
+        min = 0.01
+        if @steps < min
+          puts "Warning: Minimum allowed stepsize is #{min}"
+          @steps = min
+        end
+
         @config = config
       end
 

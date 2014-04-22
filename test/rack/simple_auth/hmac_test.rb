@@ -55,7 +55,7 @@ class HMACTest < MiniTest::Unit::TestCase
 
   def test_get_with_wrong_step
     uri = '/'
-    message = { 'method' => 'GET', 'date' => Time.now.to_i + 0.03, 'data' => uri }.to_json
+    message = { 'method' => 'GET', 'date' => Time.now.to_i + 0.035, 'data' => uri }.to_json
     hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
 
     get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
