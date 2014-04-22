@@ -10,7 +10,7 @@ module Rack
         @app = app
         @signature = config['signature'] || ''
         @secret = config['secret'] || ''
-        @tolerance = config['tolerance'] || 0 # 0 if tolerance not set in config hash
+        @tolerance = config['tolerance'] || 1 # 0 if tolerance not set in config hash
         @logpath = config['logpath']
         @steps = config['steps'] || 1
 
@@ -18,6 +18,10 @@ module Rack
         if @steps < min
           puts "Warning: Minimum allowed stepsize is #{min}"
           @steps = min
+        end
+
+        if @tolerance < @steps
+          fail "Tolerance must be greater than stepsize - Tolerance: #{@tolerance}, Stepsize: #{@steps}"
         end
 
         @config = config
