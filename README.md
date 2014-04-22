@@ -25,19 +25,11 @@ Or install it yourself as:
 [![Gem Version](https://badge.fury.io/rb/rack-simple_auth.png)](http://badge.fury.io/rb/rack-simple_auth)
 [![Dependency Status](https://gemnasium.com/Benny1992/rack-simple_auth.png)](https://gemnasium.com/Benny1992/rack-simple_auth)
 
-
-
-
 ## Usage
 
 ### HMAC Authorization
 
 HMAC should be used for communication between website backend and api server/controller/whatever..
-
-~~For usage between Server <-> Client a sniffer could easily extract the signature/public key and 
-the encrypted message which is for now the same for the same request (see TODO implement timestamp).~~
-
-~~With these 2 informations a "secure" backend could be easily seen public...~~
 
 In version 0.0.5 the timestamp has been added to the msg which will be encrypted, also the possibility to configure the allowed delay a request can have has been added.
 
@@ -56,7 +48,8 @@ config = {
   'DELETE' => 'path',
   'PUT' => 'path',
   'PATCH' => 'path'
-  'tolerance' => 2,
+  'tolerance' => 1,
+  'steps' => 0.1,
   'signature' => 'signature',
   'secret' => 'secret',
   'logpath' => '/path/to/log/file'
@@ -69,6 +62,7 @@ end
 ```
 
 Note: Private Key and Signature should be served by a file which is not checked into git version control.
+
 
 
 
@@ -109,6 +103,14 @@ The tolerance which is configureable in the config hash sets the possible delay 
 
 Notice: For a set tolerance a Encrypted Message array will be generated and compared with the MessageHash from the AUTH Header
 
+In Version 0.1.0 the stepsize option has been added
+
+You can now specify how many valid hashes are created in a range between eg.: (-1..1) (= tolerance)
+
+A minimum stepsize of 0.01 is required (0.01 are 10 milliseconds, this is the minimum because of ruby's float disaster and therefore the gem has to use Float#round(2))
+
+Let me know if you need a smaller stepsize...
+
 
 #### Logging
 
@@ -122,9 +124,6 @@ It contains following information:
 - Config for the specific Request Method (GET => path etc ...)
 - The Encrypted Message Array which was expected
 - The Signature which was expected
-
-
-
 
 ## TODO 
 
@@ -144,6 +143,7 @@ It contains following information:
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
 
 
 
