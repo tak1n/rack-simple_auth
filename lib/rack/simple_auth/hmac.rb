@@ -14,15 +14,9 @@ module Rack
         @logpath = config['logpath']
         @steps = config['steps'] || 1
 
-        min = 0.01
-        if @steps < min
-          puts "Warning: Minimum allowed stepsize is #{min}"
-          @steps = min
-        end
+        valid_stepsize?(0.01)
 
-        if @tolerance < @steps
-          fail "Tolerance must be greater than stepsize - Tolerance: #{@tolerance}, Stepsize: #{@steps}"
-        end
+        fail "Tolerance must be greater than stepsize - Tolerance: #{@tolerance}, Stepsize: #{@steps}" if @tolerance < @steps
 
         @config = config
       end
@@ -84,10 +78,7 @@ module Rack
       # @return [Hash] message [message which will be encrypted]
       def message(request, delay = 0)
         date = Time.now.to_i + delay
-
-        if delay.eql?(0.0)
-          date = date.to_i
-        end
+        date = date.to_i if delay.eql?(0.0)
 
         case request.request_method
         when 'GET'
@@ -140,7 +131,16 @@ module Rack
         end
       end
 
-      private :log, :request_data, :message, :valid?, :build_allowed_messages
+      # Check if Stepsize is valid, if > min ensure stepsize is min stepsize
+      # @param [float] min [minimum allowed stepsize]
+      def valid_stepsize?(min)
+        if @steps < min
+          puts "Warning: Minimum allowed stepsize is #{min}"
+          @steps = min
+        end
+      end
+
+      private :log, :request_data, :message, :valid?, :build_allowed_messages, :valid_stepsize?
     end
   end
 end
