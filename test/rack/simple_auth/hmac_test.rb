@@ -41,7 +41,7 @@ class HMACTest < MiniTest::Unit::TestCase
     get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
     assert_equal(200, last_response.status, 'Delay in tolerance range should receive 200')
- end
+  end
 
   def test_get_with_too_big_delay
     uri = '/'
