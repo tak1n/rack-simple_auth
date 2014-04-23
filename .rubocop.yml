@@ -1,2 +1,1 @@
-LineLength:
-  Max: 160
+inherit_from: rubocop-todo.yml
