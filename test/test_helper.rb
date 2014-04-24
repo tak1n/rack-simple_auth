@@ -34,13 +34,14 @@ module Rack
   # Module which Contains different Authorization / Authentication Classes (HMAC, ..)
   module SimpleAuth
     class << self
-      attr_accessor :testapp, :failapp
+      attr_accessor :testapp, :failapp, :failstepapp
     end
   end
 end
 
 Rack::SimpleAuth.testapp = Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/config.ru").first
 Rack::SimpleAuth.failapp = Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/config_fail.ru").first
+Rack::SimpleAuth.failstepapp = Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/config_fail_step.ru").first
 
 @logpath = "#{File.expand_path("..", __FILE__)}/logs"
 system("mkdir #{@logpath}")
