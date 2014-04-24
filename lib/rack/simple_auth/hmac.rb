@@ -15,8 +15,7 @@ module Rack
         @steps = config['steps'] || 1
 
         valid_stepsize?(0.01)
-
-        fail "Tolerance must be greater than stepsize - Tolerance: #{@tolerance}, Stepsize: #{@steps}" if @tolerance < @steps
+        valid_tolerance?
 
         @config = config
       end
@@ -47,12 +46,9 @@ module Rack
           true
         else
           log(allowed_messages)
-
-          false
         end
       end
 
-      # Private Interface
       private
 
       # Get request signature
@@ -118,10 +114,8 @@ module Rack
       #   - requested path
       def log(hash_array)
         if @logpath
-          path = @request.path
-          method = @request.request_method
-
-          log = "#{Time.new} - #{method} #{path} - 400 Unauthorized - HTTP_AUTHORIZATION: #{@request.env['HTTP_AUTHORIZATION']}\n"
+          log = "#{Time.new} - #{@request.method} #{@request.path} - 400 Unauthorized\n"
+          log << "HTTP_AUTHORIZATION: #{@request.env['HTTP_AUTHORIZATION']}\n"
           log << "Auth Message Config: #{@config[@request.request_method]}\n"
 
           if hash_array
@@ -145,6 +139,13 @@ module Rack
         if @steps < min
           puts "Warning: Minimum allowed stepsize is #{min}"
           @steps = min
+        end
+      end
+
+      # Check if tolerance is valid, tolerance must be greater than stepsize
+      def valid_tolerance?
+        if @tolerance < @steps
+          fail "Tolerance must be greater than stepsize - Tolerance: #{@tolerance}, Stepsize: #{@steps}"
         end
       end
     end
