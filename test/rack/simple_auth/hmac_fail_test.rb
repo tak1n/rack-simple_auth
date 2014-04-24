@@ -22,7 +22,7 @@ class HMACFailTest < MiniTest::Unit::TestCase
   end
 
   def test_fail_step
-    out, err = capture_io do
+    out, _err = capture_io do
       Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/config_fail_step.ru").first
     end
 
