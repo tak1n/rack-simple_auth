@@ -46,6 +46,8 @@ module Rack
           true
         else
           log(allowed_messages)
+
+          false
         end
       end
 
@@ -114,7 +116,7 @@ module Rack
       #   - requested path
       def log(hash_array)
         if @logpath
-          log = "#{Time.new} - #{@request.method} #{@request.path} - 400 Unauthorized\n"
+          log = "#{Time.new} - #{@request.request_method} #{@request.path} - 400 Unauthorized\n"
           log << "HTTP_AUTHORIZATION: #{@request.env['HTTP_AUTHORIZATION']}\n"
           log << "Auth Message Config: #{@config[@request.request_method]}\n"
 
