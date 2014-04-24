@@ -43,17 +43,26 @@ module Rack
           return false
         end
 
-        auth_array = @request.env['HTTP_AUTHORIZATION'].split(':')
-        message_hash = auth_array.first
-        signature = auth_array.last
-
-        if signature == @signature && allowed_messages.include?(message_hash)
+        if request_signature == @signature && allowed_messages.include?(request_message)
           true
         else
           log(allowed_messages)
 
           false
         end
+      end
+
+      # Private Interface
+      private
+
+      # Get request signature
+      def request_signature
+        @request.env['HTTP_AUTHORIZATION'].split(':').last
+      end
+
+      # Get encrypted request message
+      def request_message
+        @request.env['HTTP_AUTHORIZATION'].split(':').first
       end
 
       # Builds Array of allowed message hashs
@@ -102,6 +111,11 @@ module Rack
       end
 
       # Log to @logpath if request is unathorized
+      # Contains:
+      #   - allowed messages and received message
+      #   - time when request was made
+      #   - type of request
+      #   - requested path
       def log(hash_array)
         if @logpath
           path = @request.path
@@ -133,8 +147,6 @@ module Rack
           @steps = min
         end
       end
-
-      private :log, :request_data, :message, :valid_request?, :allowed_messages, :valid_stepsize?
     end
   end
 end
