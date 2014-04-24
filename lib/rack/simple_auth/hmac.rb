@@ -24,8 +24,9 @@ module Rack
       # call Method for Rack Middleware/Application
       # @param [Hash] env [Rack Env Hash which contains headers etc..]
       def call(env)
-        request = Rack::Request.new(env)
-        if valid?(request)
+        @request = Rack::Request.new(env)
+
+        if valid_request?
           @app.call(env)
         else
           response = Rack::Response.new('Unauthorized', 401, 'Content-Type' => 'text/html')
@@ -34,87 +35,80 @@ module Rack
       end
 
       # checks for valid HMAC Request
-      # @param [Rack::Request] request [current Request]
       # @return [boolean] ValidationStatus [If authorized returns true, else false]
-      def valid?(request)
-        hash_array = build_allowed_messages(request)
-
-        if request.env['HTTP_AUTHORIZATION'].nil?
-          log(request, hash_array)
+      def valid_request?
+        if @request.env['HTTP_AUTHORIZATION'].nil?
+          log(allowed_messages)
 
           return false
         end
 
-        auth_array = request.env['HTTP_AUTHORIZATION'].split(':')
+        auth_array = @request.env['HTTP_AUTHORIZATION'].split(':')
         message_hash = auth_array[0]
         signature = auth_array[1]
 
-        if signature == @signature && hash_array.include?(message_hash)
+        if signature == @signature && allowed_messages.include?(message_hash)
           true
         else
-          log(request, hash_array)
+          log(allowed_messages)
 
           false
         end
       end
 
       # Builds Array of allowed message hashs
-      # @param [Rack::Request] request [current Request]
       # @return [Array] hash_array [allowed message hashes as array]
-      def build_allowed_messages(request)
-        hash_array = []
+      def allowed_messages
+        messages = []
 
         (-(@tolerance)..@tolerance).step(@steps) do |i|
           i = i.round(2)
-          hash_array << OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message(request, i))
+          messages << OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message(i))
         end
 
-        hash_array
+        messages
       end
 
       # Get Message for current Request and delay
-      # @param [Rack::Request] request [current Request]
       # @param [Fixnum] delay [delay in timestamp format]
       # @return [Hash] message [message which will be encrypted]
-      def message(request, delay = 0)
+      def message(delay = 0)
         date = Time.now.to_i + delay
         date = date.to_i if delay.eql?(0.0)
 
-        case request.request_method
+        case @request.request_method
         when 'GET'
-          return { 'method' => request.request_method, 'date' => date, 'data' => request_data(request, @config) }.to_json
+          return { 'method' => @request.request_method, 'date' => date, 'data' => request_data(@config) }.to_json
         when 'POST'
-          return { 'method' => request.request_method, 'date' => date, 'data' => request_data(request, @config) }.to_json
+          return { 'method' => @request.request_method, 'date' => date, 'data' => request_data(@config) }.to_json
         when 'DELETE'
-          return { 'method' => request.request_method, 'date' => date, 'data' => request_data(request, @config) }.to_json
+          return { 'method' => @request.request_method, 'date' => date, 'data' => request_data(@config) }.to_json
         when 'PUT'
-          return { 'method' => request.request_method, 'date' => date, 'data' => request_data(request, @config) }.to_json
+          return { 'method' => @request.request_method, 'date' => date, 'data' => request_data(@config) }.to_json
         when 'PATCH'
-          return { 'method' => request.request_method, 'date' => date, 'data' => request_data(request, @config) }.to_json
+          return { 'method' => @request.request_method, 'date' => date, 'data' => request_data(@config) }.to_json
         end
       end
 
       # Get Request Data specified by Config
-      # @param [Rack::Request] request [current Request]
       # @param [Hash] config [Config Hash containing what type of info is data for each request]
       # @return [String|Hash] data [Data for each request]
-      def request_data(request, config)
-        if config[request.request_method] == 'path' || config[request.request_method] == 'params'
-          request.send(config[request.request_method].to_sym)
+      def request_data(config)
+        if config[@request.request_method] == 'path' || config[@request.request_method] == 'params'
+          @request.send(config[@request.request_method].to_sym)
         else
-          fail "Not a valid option #{config[request.request_method]} - Use either params or path"
+          fail "Not a valid option #{config[@request.request_method]} - Use either params or path"
         end
       end
 
       # Log to @logpath if request is unathorized
-      # @param [Rack::Request] request [current Request]
-      def log(request, hash_array)
+      def log(hash_array)
         if @logpath
-          path = request.path
-          method = request.request_method
+          path = @request.path
+          method = @request.request_method
 
-          log = "#{Time.new} - #{method} #{path} - 400 Unauthorized - HTTP_AUTHORIZATION: #{request.env['HTTP_AUTHORIZATION']}\n"
-          log << "Auth Message Config: #{@config[request.request_method]}\n"
+          log = "#{Time.new} - #{method} #{path} - 400 Unauthorized - HTTP_AUTHORIZATION: #{@request.env['HTTP_AUTHORIZATION']}\n"
+          log << "Auth Message Config: #{@config[@request.request_method]}\n"
 
           if hash_array
             log << "Allowed Encrypted Messages:\n"
@@ -140,7 +134,7 @@ module Rack
         end
       end
 
-      private :log, :request_data, :message, :valid?, :build_allowed_messages, :valid_stepsize?
+      private :log, :request_data, :message, :valid_request?, :allowed_messages, :valid_stepsize?
     end
   end
 end
