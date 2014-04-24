@@ -7,10 +7,16 @@ LICENSE.txt
 MANIFEST
 README.md
 Rakefile
+checksum/rack-simple_auth-0.0.9.gem.sha512
+checksum/rack-simple_auth-0.1.0.gem.sha512
+checksum/rack-simple_auth-0.1.1.gem.sha512
 lib/rack/simple_auth.rb
 lib/rack/simple_auth/hmac.rb
 lib/rack/simple_auth/version.rb
 rack-simple_auth.gemspec
+rubocop-todo.yml
+task/build.rake
+task/checksum.rake
 task/default.rake
 task/floodtest.rake
 task/manifest.rake
@@ -18,6 +24,8 @@ task/test.rake
 task/travis.rake
 test/config.ru
 test/config_fail.ru
+test/config_fail_step.ru
+test/config_fail_tolerance.ru
 test/rack/simple_auth/hmac_fail_test.rb
 test/rack/simple_auth/hmac_test.rb
 test/test_helper.rb
