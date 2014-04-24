@@ -44,8 +44,8 @@ module Rack
         end
 
         auth_array = @request.env['HTTP_AUTHORIZATION'].split(':')
-        message_hash = auth_array[0]
-        signature = auth_array[1]
+        message_hash = auth_array.first
+        signature = auth_array.last
 
         if signature == @signature && allowed_messages.include?(message_hash)
           true
