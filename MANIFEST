@@ -21,7 +21,6 @@ task/default.rake
 task/floodtest.rake
 task/manifest.rake
 task/test.rake
-task/travis.rake
 test/config.ru
 test/config_fail.ru
 test/config_fail_step.ru
