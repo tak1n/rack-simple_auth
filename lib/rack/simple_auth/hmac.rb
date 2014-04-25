@@ -139,8 +139,7 @@ module Rack
       # @param [float] min [minimum allowed stepsize]
       def valid_stepsize?(min)
         if @steps < min
-          puts "Warning: Minimum allowed stepsize is #{min}"
-          @steps = min
+          fail "Minimum allowed stepsize is #{min}"
         end
       end
 

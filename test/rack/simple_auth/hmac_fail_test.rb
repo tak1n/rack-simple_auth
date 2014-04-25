@@ -22,11 +22,7 @@ class HMACFailTest < MiniTest::Unit::TestCase
   end
 
   def test_fail_step
-    out, _err = capture_io do
-      Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/config_fail_step.ru").first
-    end
-
-    assert_match('Warning: Minimum allowed stepsize is 0.01', out, 'Warning should be printed if stepsize is below 0.01')
+    assert_raises(RuntimeError) { Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/config_fail_step.ru").first }
   end
 
   def test_fail_tolerance
