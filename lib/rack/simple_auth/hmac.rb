@@ -71,7 +71,7 @@ module Rack
 
         (-(@tolerance)..@tolerance).step(@steps) do |i|
           i = i.round(2)
-          messages << OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message(@date, i))
+          messages << OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message(i))
         end
 
         messages
@@ -80,8 +80,8 @@ module Rack
       # Get Message for current Request and delay
       # @param [Fixnum] delay [delay in timestamp format]
       # @return [Hash] message [message which will be encrypted]
-      def message(date, delay = 0)
-        date = date + delay
+      def message(delay = 0)
+        date = @date + delay
         date = date.to_i if delay.eql?(0.0)
         puts "Delay: #{delay}, Timestamp: #{date}"
 
