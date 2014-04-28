@@ -10,6 +10,7 @@ namespace :floodtest do
     1.upto(test_runs) do |i|
       puts "Running test #{i} of #{test_runs}"
       exit(-1) if !system('bundle exec rake test:unit')
+      Rake::Task['test:cleanup'].invoke
     end
   end
 
