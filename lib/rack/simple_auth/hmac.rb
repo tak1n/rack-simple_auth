@@ -83,7 +83,9 @@ module Rack
       def message(delay = 0)
         date = @date + delay
         date = date.to_i if delay.eql?(0.0)
-        puts "Delay: #{delay}, Timestamp: #{date}"
+
+        # Print out Delay and Timestamp for each range step in development environment
+        puts "Delay: #{delay}, Timestamp: #{date}" if ENV['RACK_ENV'].eql?('development')
 
         case @request.request_method
         when 'GET'
@@ -118,22 +120,20 @@ module Rack
       #   - requested path
       def log(hash_array)
         if @logpath
-          log = "#{Time.new} - #{@request.request_method} #{@request.path} - 400 Unauthorized\n"
-          log << "HTTP_AUTHORIZATION: #{@request.env['HTTP_AUTHORIZATION']}\n"
-          log << "Auth Message Config: #{@config[@request.request_method]}\n"
+          msg = "#{Time.new} - #{@request.request_method} #{@request.path} - 400 Unauthorized\n"
+          msg << "HTTP_AUTHORIZATION: #{@request.env['HTTP_AUTHORIZATION']}\n"
+          msg << "Auth Message Config: #{@config[@request.request_method]}\n"
 
           if hash_array
-            log << "Allowed Encrypted Messages:\n"
+            msg << "Allowed Encrypted Messages:\n"
             hash_array.each do |hash|
-              log << "#{hash}\n"
+              msg << "#{hash}\n"
             end
           end
 
-          log << "Auth Signature: #{@signature}"
+          msg << "Auth Signature: #{@signature}"
 
-          open("#{@logpath}/#{ENV['RACK_ENV']}_error.log", 'a') do |f|
-            f << "#{log}\n"
-          end
+          Rack::SimpleAuth::Logger.log(@logpath, ENV['RACK_ENV'], msg)
         end
       end
 
@@ -151,6 +151,6 @@ module Rack
           fail "Tolerance must be greater than stepsize - Tolerance: #{@tolerance}, Stepsize: #{@steps}"
         end
       end
-    end
-  end
-end
+    end # HMAC
+  end # SimpleAuth
+end # Rack
