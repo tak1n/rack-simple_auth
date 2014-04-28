@@ -13,6 +13,7 @@ module Rack
         @tolerance = config['tolerance'] || 1 # 0 if tolerance not set in config hash
         @logpath = config['logpath']
         @steps = config['steps'] || 1
+        @date = Time.now.to_i.freeze
 
         valid_stepsize?(0.01)
         valid_tolerance?
@@ -70,7 +71,7 @@ module Rack
 
         (-(@tolerance)..@tolerance).step(@steps) do |i|
           i = i.round(2)
-          messages << OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message(i))
+          messages << OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message(@date, i))
         end
 
         messages
@@ -79,9 +80,10 @@ module Rack
       # Get Message for current Request and delay
       # @param [Fixnum] delay [delay in timestamp format]
       # @return [Hash] message [message which will be encrypted]
-      def message(delay = 0)
-        date = Time.now.to_i + delay
+      def message(date, delay = 0)
+        date = date + delay
         date = date.to_i if delay.eql?(0.0)
+        puts "Delay: #{delay}, Timestamp: #{date}"
 
         case @request.request_method
         when 'GET'
