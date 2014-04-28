@@ -13,7 +13,6 @@ module Rack
         @tolerance = config['tolerance'] || 1 # 0 if tolerance not set in config hash
         @logpath = config['logpath']
         @steps = config['steps'] || 1
-        @date = Time.now.to_i.freeze
 
         valid_stepsize?(0.01)
         valid_tolerance?
@@ -69,6 +68,7 @@ module Rack
       def allowed_messages
         messages = []
 
+        @date = Time.now.to_i.freeze
         (-(@tolerance)..@tolerance).step(@steps) do |i|
           i = i.round(2)
           messages << OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message(i))
