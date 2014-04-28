@@ -24,6 +24,7 @@ Or install it yourself as:
 [![Coverage Status](https://coveralls.io/repos/Benny1992/rack-simple_auth/badge.png?branch=master)](https://coveralls.io/r/Benny1992/rack-simple_auth?branch=master)
 [![Gem Version](https://badge.fury.io/rb/rack-simple_auth.png)](http://badge.fury.io/rb/rack-simple_auth)
 [![Dependency Status](https://gemnasium.com/Benny1992/rack-simple_auth.png)](https://gemnasium.com/Benny1992/rack-simple_auth)
+[![Codeship](https://www.codeship.io/projects/f2d9d790-b0fe-0131-3fd5-025f180094b5/status)](https://www.codeship.io/projects/f2d9d790-b0fe-0131-3fd5-025f180094b5/status)
 
 ## Usage
 
