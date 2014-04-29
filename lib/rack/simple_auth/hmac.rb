@@ -68,20 +68,21 @@ module Rack
       def allowed_messages
         messages = []
 
-        @date = Time.now.to_i.freeze
+        date = Time.now.to_i.freeze
         (-(@tolerance)..@tolerance).step(@steps) do |i|
           i = i.round(2)
-          messages << OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message(i))
+          messages << OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message(date, i))
         end
 
         messages
       end
 
       # Get Message for current Request and delay
+      # @param [Fixnum] date [current date in timestamp format]
       # @param [Fixnum] delay [delay in timestamp format]
       # @return [Hash] message [message which will be encrypted]
-      def message(delay = 0)
-        date = @date + delay
+      def message(date, delay = 0)
+        date = date + delay
         date = date.to_i if delay.eql?(0.0)
 
         # Print out Delay and Timestamp for each range step in development environment
