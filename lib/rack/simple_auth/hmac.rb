@@ -88,18 +88,7 @@ module Rack
         # Print out Delay and Timestamp for each range step in development environment
         puts "Delay: #{delay}, Timestamp: #{date}" if ENV['RACK_ENV'].eql?('development')
 
-        case @request.request_method
-        when 'GET'
-          return { 'method' => @request.request_method, 'date' => date, 'data' => request_data(@config) }.to_json
-        when 'POST'
-          return { 'method' => @request.request_method, 'date' => date, 'data' => request_data(@config) }.to_json
-        when 'DELETE'
-          return { 'method' => @request.request_method, 'date' => date, 'data' => request_data(@config) }.to_json
-        when 'PUT'
-          return { 'method' => @request.request_method, 'date' => date, 'data' => request_data(@config) }.to_json
-        when 'PATCH'
-          return { 'method' => @request.request_method, 'date' => date, 'data' => request_data(@config) }.to_json
-        end
+        return { 'method' => @request.request_method, 'date' => date, 'data' => request_data(@config) }.to_json
       end
 
       # Get Request Data specified by Config
