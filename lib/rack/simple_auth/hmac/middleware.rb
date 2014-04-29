@@ -148,16 +148,14 @@ module Rack
           date += delay
           date = date.to_i if delay.eql?(0.0)
 
-          { 'method' => @request.request_method, 'date' => date, 'data' => request_data(@config) }.to_json
+          { 'method' => @request.request_method, 'date' => date, 'data' => request_data }.to_json
         end
 
         ##
         # Get Request Data specified by @config.request_config
         #
-        # @param [Hash] config [Config Hash containing what type of info is data for each request]
-        #
         # @return [String|Hash] data
-        def request_data(config)
+        def request_data
           if @config.request_config[@request.request_method] == 'path' || @config.request_config[@request.request_method] == 'params'
             @request.send(@config.request_config[@request.request_method].to_sym)
           else
