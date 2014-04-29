@@ -11,7 +11,7 @@ CyclomaticComplexity:
 
 # Offense count: 55
 LineLength:
-  Max: 129
+  Max: 150
 
 # Offense count: 3
 # Configuration parameters: CountComments.
