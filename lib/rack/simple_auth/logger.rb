@@ -10,7 +10,7 @@ module Rack
       # @param [TrueClass|FalseClass] verbose [if true print to stdout]
       # @param [String] msg [Message defined by each Authorization class]
       #
-      def self.log(logpath, env, verbose = false, msg)
+      def self.log(logpath, verbose = false, env, msg)
         system("mkdir #{logpath}") unless Dir.exist?("#{logpath}")
         open("#{logpath}/#{env}_error.log", 'a') do |f|
           f << "#{msg}\n"
