@@ -4,14 +4,19 @@ module Rack
     # This class receives a logpath, env and message and
     # prints the message to the specified logpath for the proper env file (eg.: /path/to/file/test_error.log for test env)
     module Logger
-      def self.log(logpath, env = 'development', msg)
+      # Create Logfile
+      #
+      # @param [String] logpath [path to logfile]
+      # @param [TrueClass|FalseClass] verbose [if true print to stdout]
+      # @param [String] msg [Message defined by each Authorization class]
+      #
+      def self.log(logpath, env, verbose = false, msg)
         system("mkdir #{logpath}") unless Dir.exist?("#{logpath}")
         open("#{logpath}/#{env}_error.log", 'a') do |f|
           f << "#{msg}\n"
         end
 
-        # Print out log to stdout for dev env
-        puts msg if ENV['RACK_ENV'].eql?('development')
+        puts msg if verbose
       end
     end # Logger
   end # SimpleAuth
