@@ -1,8 +1,12 @@
 module Rack
   # Module which Contains different Authorization / Authentication Classes (HMAC, ..)
   module SimpleAuth
-    # HMAC Middleware uses HMAC Authorization for Securing an REST API
+    # module HMAC
+    # Contains different classes for authorizing against a hmac signed request
     module HMAC
+      # class Middleware
+      # Middleware class which represents the interface to the rack api via Middleware#call
+      # and checks if a request is hmac authorized.
       class Middleware
         def self.method_missing(name, *args)
           msg = "Did you try to use HMAC Middleware as Rack Application via 'run'?\n" if name.eql?(:call)
@@ -10,7 +14,7 @@ module Rack
           msg << "args: #{args.inspect}\n" unless name.eql?(:call)
           msg << "on: #{self}"
 
-          raise NoMethodError, msg
+          fail NoMethodError, msg
         end
         # Constructor for Rack Middleware (passing the rack stack)
         # @param [Rack Application] app [next middleware or rack app which gets called]
@@ -133,9 +137,7 @@ module Rack
         # Check if Stepsize is valid, if > min ensure stepsize is min stepsize
         # @param [float] min [minimum allowed stepsize]
         def valid_stepsize?(min)
-          if @config.stepsize < min
-            fail "Minimum allowed stepsize is #{min}"
-          end
+          fail "Minimum allowed stepsize is #{min}" if @config.stepsize < min
         end
 
         # Check if tolerance is valid, tolerance must be greater than stepsize

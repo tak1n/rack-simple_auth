@@ -1,6 +1,9 @@
 module Rack
   module SimpleAuth
     module HMAC
+      # class Config
+      # Config objects will be instantiated out of this class when using Rack::SimpleAuth::HMAC::Middleware
+      # Also the public instance attributes / virtual attributes will be populated via the Middleware DSL
       class Config < Hash
         attr_writer :tolerance, :stepsize
         attr_writer :secret, :signature
