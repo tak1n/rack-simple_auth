@@ -1,18 +1,23 @@
 require 'rack/lobster'
 require 'rack/simple_auth'
 
-config = {
+request_config = {
   'GET' => 'path',
   'POST' => 'params',
   'DELETE' => 'path',
   'PUT' => 'path',
-  'PATCH' => 'path',
-  'tolerance' => 0.5,
-  'signature' => 'test_signature',
-  'secret' => 'test_secret',
-  'logpath' => "#{File.expand_path('..', __FILE__)}/logs",
-  'steps' => 0.01
+  'PATCH' => 'path'
 }
 
-use Rack::SimpleAuth::HMAC, config
+use Rack::SimpleAuth::HMAC::Middleware do |options|
+  options.tolerance = 0.5
+  options.stepsize  = 0.01
+
+  options.secret = 'test_secret'
+  options.signature = 'test_signature'
+
+  options.logpath = "#{File.expand_path('..', __FILE__)}/logs"
+  options.request_config = request_config
+end
+
 run Rack::Lobster.new
