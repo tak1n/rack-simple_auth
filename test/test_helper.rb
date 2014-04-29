@@ -31,9 +31,7 @@ require 'json'
 require 'rack/simple_auth'
 
 module Rack
-  # Module which Contains different Authorization / Authentication Classes (HMAC, ..)
   module SimpleAuth
-    # HMAC module
     module HMAC
       class << self
         attr_accessor :testapp, :failapp, :failrunapp
