@@ -84,23 +84,36 @@ module Rack
         ##
         # Checks for valid HMAC Request
         #
-        # @return [TrueClass] if request was valid
-        # @return [FalseClass] if request was invalid
+        # @return [TrueClass] if request is authorized
+        # @return [FalseClass] if request is not authorized or HTTP_AUTHORIZATION Header is not set
         #
         def valid_request?
-          if @request.env['HTTP_AUTHORIZATION'].nil?
-            log
+          log
 
-            return false
-          end
+          return false if empty_header? || !authorized
 
-          if request_signature == @config.signature && allowed_messages.include?(request_message)
-            true
-          else
-            log
+          true
+        end
 
-            false
-          end
+        ##
+        # Check if HTTP_AUTHORIZATION Header is set
+        #
+        # @return [TrueClass] if header is set
+        # @return [FalseClass] if header is not set
+        #
+        def empty_header?
+          @request.env['HTTP_AUTHORIZATION'].nil?
+        end
+
+        ##
+        # Check if request is authorized
+        #
+        # @return [TrueClass] if request is authorized -> {#request_signature} is correct & {#request_message} is included
+        #   in {#allowed_messages}
+        # @return [FalseClass] if request is not authorized
+        #
+        def authorized
+          request_signature == @config.signature && allowed_messages.include?(request_message)
         end
 
         ##
@@ -164,7 +177,7 @@ module Rack
         end
 
         ##
-        # Log to @config.logpath if request is unathorized
+        # Log to @config.logpath
         # Contains:
         #   - allowed messages and received message
         #   - time when request was made
