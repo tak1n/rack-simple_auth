@@ -4,7 +4,7 @@ task :manifest do
     'checkum/**/*.*',
     'doc/**/*.*',
     'lib/**/*.*',
-    'LICENSE',
+    'LICENSE.txt',
     'MANIFEST',
     '*.gemspec',
     'README.rdoc'
