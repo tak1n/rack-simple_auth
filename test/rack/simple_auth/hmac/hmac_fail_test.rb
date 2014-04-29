@@ -10,7 +10,7 @@ class HMACFailTest < MiniTest::Unit::TestCase
   end
 
   def app
-    Rack::SimpleAuth.failapp
+    Rack::SimpleAuth::HMAC.failapp
   end
 
   def test_fail
@@ -22,11 +22,15 @@ class HMACFailTest < MiniTest::Unit::TestCase
   end
 
   def test_fail_step
-    assert_raises(RuntimeError) { Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/config_fail_step.ru").first }
+    assert_raises(RuntimeError) { Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/rack/simple_auth/hmac/config_fail_step.ru").first }
   end
 
   def test_fail_tolerance
-    assert_raises(RuntimeError) { Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/config_fail_tolerance.ru").first }
+    assert_raises(RuntimeError) { Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/rack/simple_auth/hmac/config_fail_tolerance.ru").first }
+  end
+
+  def test_unknown_dsl_option
+    assert_raises(RuntimeError) { Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/rack/simple_auth/hmac/config_fail_option.ru").first }
   end
 
   def teardown

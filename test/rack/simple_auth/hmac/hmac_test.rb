@@ -10,7 +10,7 @@ class HMACTest < MiniTest::Unit::TestCase
   end
 
   def app
-    Rack::SimpleAuth.testapp
+    Rack::SimpleAuth::HMAC.testapp
   end
 
   def test_get_without_auth_header

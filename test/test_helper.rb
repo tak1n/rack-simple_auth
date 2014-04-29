@@ -33,14 +33,17 @@ require 'rack/simple_auth'
 module Rack
   # Module which Contains different Authorization / Authentication Classes (HMAC, ..)
   module SimpleAuth
-    class << self
-      attr_accessor :testapp, :failapp
+    module HMAC
+      class << self
+        attr_accessor :testapp, :failapp, :failrunapp
+      end
     end
   end
 end
 
-Rack::SimpleAuth.testapp = Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/config.ru").first
-Rack::SimpleAuth.failapp = Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/config_fail.ru").first
+Rack::SimpleAuth::HMAC.testapp = Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/rack/simple_auth/hmac/config.ru").first
+Rack::SimpleAuth::HMAC.failapp = Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/rack/simple_auth/hmac/config_fail.ru").first
+Rack::SimpleAuth::HMAC.failrunapp = Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/rack/simple_auth/hmac/config_fail_run.ru").first
 
 @logpath = "#{File.expand_path("..", __FILE__)}/logs"
 system("mkdir #{@logpath}")
