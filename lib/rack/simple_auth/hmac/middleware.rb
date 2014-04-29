@@ -90,7 +90,7 @@ module Rack
         def valid_request?
           log
 
-          return false if empty_header? || !authorized
+          return false if empty_header? || !authorized?
 
           true
         end
@@ -112,8 +112,8 @@ module Rack
         #   in {#allowed_messages}
         # @return [FalseClass] if request is not authorized
         #
-        def authorized
-          request_signature == @config.signature && allowed_messages.include?(request_message)
+        def authorized?
+          request_signature.eql?(@config.signature) && allowed_messages.include?(request_message)
         end
 
         ##
