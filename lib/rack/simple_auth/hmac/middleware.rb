@@ -4,6 +4,14 @@ module Rack
     # HMAC Middleware uses HMAC Authorization for Securing an REST API
     module HMAC
       class Middleware
+        def self.method_missing(name, *args)
+          msg = "Did you try to use HMAC Middleware as Rack Application via 'run'?\n" if name.eql?(:call)
+          msg << "method: #{name}\n"
+          msg << "args: #{args.inspect}\n" unless name.eql?(:call)
+          msg << "on: #{self}"
+
+          raise NoMethodError, msg
+        end
         # Constructor for Rack Middleware (passing the rack stack)
         # @param [Rack Application] app [next middleware or rack app which gets called]
         # @param [Hash] config [config hash where tolerance, secret, signature etc.. are set]
