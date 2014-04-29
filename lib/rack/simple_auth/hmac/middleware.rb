@@ -56,6 +56,7 @@ module Rack
         #
         def initialize(app, &block)
           @app, @config = app, Config.new
+
           yield @config if block_given?
 
           valid_stepsize?(0.01)
@@ -147,9 +148,6 @@ module Rack
           date += delay
           date = date.to_i if delay.eql?(0.0)
 
-          # Print out Delay and Timestamp for each range step if verbose is true
-          puts "Delay: #{delay}, Timestamp: #{date}" if @config.verbose
-
           { 'method' => @request.request_method, 'date' => date, 'data' => request_data(@config) }.to_json
         end
 
@@ -176,7 +174,7 @@ module Rack
         #   - requested path
         def log
           if @config.logpath
-            msg = "#{Time.new} - #{@request.request_method} #{@request.path} - 400 Unauthorized\n"
+            msg =  "#{Time.new} - #{@request.request_method} #{@request.path} - 400 Unauthorized\n"
             msg << "HTTP_AUTHORIZATION: #{@request.env['HTTP_AUTHORIZATION']}\n"
             msg << "Auth Message Config: #{@config.request_config[@request.request_method]}\n"
 
