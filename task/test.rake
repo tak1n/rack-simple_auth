@@ -16,7 +16,7 @@ namespace :test do
   # end
   
   task :cleanup do
-    system("rm -rf #{File.expand_path('../../', __FILE__)}/test/logs")
+    system("rm -rf #{File.expand_path('../../', __FILE__)}/test/rack/simple_auth/hmac/logs")
   end
 end
 
