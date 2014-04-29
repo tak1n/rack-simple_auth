@@ -58,6 +58,46 @@ Basic Usage:
 
     run Rack::Lobster.new
 
+In general each request has a message (which is encrypted) in following format:
+
+    { 'method' => @request.request_method, 'date' => date, 'data' => request_data }.to_json
+
+For example accessing +GET /test+ with this configuration represents following message
+
+    { 'method' => 'GET', 'date' => 23429421, 'data' => '/test' }.to_json
+
+
+With the tolerance & stepsize there is an adjustable amount of messages wich are built (Rack::SimpleAuth::HMAC::Middleware#allowed_messages)
+
+This means a request could have a certain latency (delay) and the reuquest still is authorized 
+
+==== NOTE:
+
+Tolerance & Stepsize has to be choosen wisely - too big tolerance replay attacks are possible if attacker knows your secret & signature and can emulate your AUTHORIZATION Header for a certain moment in future
+
+==== Secure your REST Api:
+
+To secure your REST Api you have to send the HTTP_AUTHORIZATION Header with each request where the HMAC Middleware is used.
+
+For example +POST /form+ with params +{ name => benny1992 }+ is secured the following way:
+
+Uncrypted Message:
+
+  { 'method' => 'POST', 'date' => timestamp +- delay, 'data' => { 'name' => 'benny1992' } }.to_json
+
+Encryption Mechanism:
+
+  OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @config.secret, message(date, i))
+
+where @config.secret represents your secret which was set in the middleware dsl block and message represents the uncrypted message
+for the specific timestamp(date) and delay(i)
+
+===== Therefore you need following encryption mechanism on the client side (pseudocode):
+
+  encrypted_message = OpenSSL::HMAC.hexdigest(OpenSSL:Digest.new('sha256'), 'test_secret', message)
+
+  HTTP_AUTHORIZATION = encrypted_message:'test_signature'
+
 == Contributing
 
 1. Fork it ( http://github.com/benny1992/rack-simple_auth/fork )
