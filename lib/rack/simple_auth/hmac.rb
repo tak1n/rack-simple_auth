@@ -82,13 +82,13 @@ module Rack
       # @param [Fixnum] delay [delay in timestamp format]
       # @return [Hash] message [message which will be encrypted]
       def message(date, delay = 0)
-        date = date + delay
+        date += delay
         date = date.to_i if delay.eql?(0.0)
 
         # Print out Delay and Timestamp for each range step in development environment
         puts "Delay: #{delay}, Timestamp: #{date}" if ENV['RACK_ENV'].eql?('development')
 
-        return { 'method' => @request.request_method, 'date' => date, 'data' => request_data(@config) }.to_json
+        { 'method' => @request.request_method, 'date' => date, 'data' => request_data(@config) }.to_json
       end
 
       # Get Request Data specified by Config
