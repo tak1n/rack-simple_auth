@@ -1,6 +1,12 @@
 LICENSE.txt
 MANIFEST
 README.rdoc
+checksum/rack-simple_auth-0.0.9.gem.sha512
+checksum/rack-simple_auth-0.1.0.gem.sha512
+checksum/rack-simple_auth-0.1.1.gem.sha512
+checksum/rack-simple_auth-0.1.2.gem.sha512
+checksum/rack-simple_auth-1.0.0.gem.sha512
+checksum/rack-simple_auth-1.0.0rc.gem.sha512
 doc/Rack.html
 doc/Rack/SimpleAuth.html
 doc/Rack/SimpleAuth/HMAC.html
@@ -13,6 +19,7 @@ doc/css/common.css
 doc/css/full_list.css
 doc/css/style.css
 doc/examples/index.php
+doc/examples/rack_lobster.ru
 doc/file.README.html
 doc/file_list.html
 doc/frames.html
