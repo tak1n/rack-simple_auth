@@ -138,7 +138,6 @@ module Rack
         def allowed_messages
           messages = []
 
-          puts 'allowed_messages called'
           # Timestamp with milliseconds as Fixnum
           date = (Time.now.to_f.freeze * 1000).to_i
           (-(@config.tolerance)..@config.tolerance).step(1) do |i|
