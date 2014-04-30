@@ -48,7 +48,7 @@ module Rack
         #
         # @return [Fixnum] tolerance
         def tolerance
-          @tolerance || 1
+          @tolerance || 1000
         end
 
         ##
