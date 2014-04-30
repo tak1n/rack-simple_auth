@@ -10,7 +10,7 @@ request_config = {
 }
 
 use Rack::SimpleAuth::HMAC::Middleware do |options|
-  options.tolerance = 100
+  options.tolerance = 1000
 
   options.secret = 'test_secret'
   options.signature = 'test_signature'

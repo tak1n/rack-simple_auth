@@ -39,7 +39,7 @@ class HMACTest < MiniTest::Unit::TestCase
 
   def test_get_with_delay_in_tolerance_range
     uri = '/'
-    message = { 'method' => 'GET', 'date' => now - 5, 'data' => uri }.to_json
+    message = { 'method' => 'GET', 'date' => now - 200, 'data' => uri }.to_json
     hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
 
     get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
