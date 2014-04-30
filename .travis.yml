@@ -18,6 +18,6 @@ matrix:
   allow_failures:
     - rvm: jruby
     - rvm: ruby-head
-    - rvm: rbx
+    - rvm: 2.1.0
 
 script:  "env COVERAGE=true bundle exec rake"
