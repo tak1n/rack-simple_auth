@@ -7,6 +7,7 @@ checksum/rack-simple_auth-0.1.1.gem.sha512
 checksum/rack-simple_auth-0.1.2.gem.sha512
 checksum/rack-simple_auth-1.0.0.gem.sha512
 checksum/rack-simple_auth-1.0.0rc.gem.sha512
+checksum/rack-simple_auth-1.0.1.gem.sha512
 doc/Rack.html
 doc/Rack/SimpleAuth.html
 doc/Rack/SimpleAuth/HMAC.html
