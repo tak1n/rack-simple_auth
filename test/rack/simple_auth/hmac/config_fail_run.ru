@@ -11,8 +11,8 @@ request_config = {
 
 # Middleware should not be runnable...
 run Rack::SimpleAuth::HMAC::Middleware do |options|
-  options.tolerance = 0.5
-  options.stepsize  = 0.01
+  options.tolerance = 500
+  options.stepsize  = 10
 
   options.secret = 'test_secret'
   options.signature = 'test_signature'
