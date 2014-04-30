@@ -11,7 +11,6 @@ request_config = {
 
 use Rack::SimpleAuth::HMAC::Middleware do |options|
   options.tolerance = 500
-  options.stepsize  = 10
 
   options.secret = 'test_secret'
   options.signature = 'test_signature'
