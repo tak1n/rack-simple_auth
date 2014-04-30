@@ -141,9 +141,9 @@ module Rack
         def allowed_messages
           messages = []
 
-          date = Time.now.to_i.freeze
+          # Timestamp with milliseconds as Fixnum
+          date = (Time.now.to_f.freeze * 1000).to_i
           (-(@config.tolerance)..@config.tolerance).step(@config.stepsize) do |i|
-            i = i.round(2)
             messages << OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @config.secret, message(date, i))
           end
 
@@ -159,7 +159,6 @@ module Rack
         # @return [String] message
         def message(date, delay = 0)
           date += delay
-          date = date.to_i if delay.eql?(0.0)
 
           { 'method' => @request.request_method, 'date' => date, 'data' => request_data }.to_json
         end
