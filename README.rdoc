@@ -46,8 +46,7 @@ Basic Usage:
     }
 
     use Rack::SimpleAuth::HMAC::Middleware do |options|
-      options.tolerance = 0.5
-      options.stepsize  = 0.01
+      options.tolerance = 1500 # 1500ms -> 1.5s
 
       options.secret = 'test_secret'
       options.signature = 'test_signature'
@@ -64,16 +63,13 @@ In general each request has a message (which is encrypted) in following format:
 
 For example accessing +GET /test+ with this configuration represents following message
 
-    { 'method' => 'GET', 'date' => 23429421, 'data' => '/test' }.to_json
+    { 'method' => 'GET', 'date' => 1398821451494, 'data' => '/test' }.to_json
 
 
-With the tolerance & stepsize there is an adjustable amount of messages wich are built (Rack::SimpleAuth::HMAC::Middleware#allowed_messages)
+With the tolerance there is an adjustable amount of messages wich are built (Rack::SimpleAuth::HMAC::Middleware#allowed_messages)
 
-This means a request could have a certain latency (delay) and the reuquest still is authorized 
+This means a request could have a certain latency (delay) and the request is still authorized
 
-==== NOTE:
-
-Tolerance & Stepsize has to be choosen wisely - too big tolerance replay attacks are possible if attacker knows your secret & signature and can emulate your AUTHORIZATION Header for a certain moment in future
 
 ==== Secure your REST Api:
 
@@ -83,7 +79,7 @@ For example +POST /form+ with params +{ name => benny1992 }+ is secured the foll
 
 Uncrypted Message:
 
-  { 'method' => 'POST', 'date' => timestamp +- delay, 'data' => { 'name' => 'benny1992' } }.to_json
+  { 'method' => 'POST', 'date' => timestamp +- tolerance, 'data' => { 'name' => 'benny1992' } }.to_json
 
 Encryption Mechanism:
 
@@ -97,6 +93,20 @@ for the specific timestamp(date) and delay(i)
   encrypted_message = OpenSSL::HMAC.hexdigest(OpenSSL:Digest.new('sha256'), 'test_secret', message)
 
   HTTP_AUTHORIZATION = encrypted_message:'test_signature'
+
+===== Time formats
+
+The timestamp and tolerance are in millisecond format:
+
+In Ruby land this means:
+
+  (Time.now.to_f * 1000).to_i
+
+For PHP you have to use +round()+ and +microtime()+ :
+
+  round(microtime(true) * 1000)
+
+===== General your timestamp should only contain 13 digits and NO floating part
 
 == Contributing
 
