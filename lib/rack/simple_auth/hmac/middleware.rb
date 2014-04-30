@@ -184,22 +184,20 @@ module Rack
         #   (Rack::SimpleAuth::Logger.log has IO action, i think there are some performance issues)
         #
         def log
-          if @config.logpath
-            msg =  "#{Time.new} - #{@request.request_method} #{@request.path} - 400 Unauthorized\n"
-            msg << "HTTP_AUTHORIZATION: #{@request.env['HTTP_AUTHORIZATION']}\n"
-            msg << "Auth Message Config: #{@config.request_config[@request.request_method]}\n"
+          msg =  "#{Time.new} - #{@request.request_method} #{@request.path} - 400 Unauthorized\n"
+          msg << "HTTP_AUTHORIZATION: #{@request.env['HTTP_AUTHORIZATION']}\n"
+          msg << "Auth Message Config: #{@config.request_config[@request.request_method]}\n"
 
-            if @allowed_messages
-              msg << "Allowed Encrypted Messages:\n"
-              @allowed_messages.each do |hash|
-                msg << "#{hash}\n"
-              end
+          if @allowed_messages
+            msg << "Allowed Encrypted Messages:\n"
+            @allowed_messages.each do |hash|
+              msg << "#{hash}\n"
             end
-
-            msg << "Auth Signature: #{@config.signature}"
-
-            Rack::SimpleAuth::Logger.log(@config.logpath, @config.verbose, ENV['RACK_ENV'], msg)
           end
+
+          msg << "Auth Signature: #{@config.signature}"
+
+          Rack::SimpleAuth::Logger.log(@config.logpath, @config.verbose, ENV['RACK_ENV'], msg)
         end
       end # Middleware
     end # HMAC
