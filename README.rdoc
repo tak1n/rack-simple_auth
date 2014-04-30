@@ -106,6 +106,10 @@ For PHP you have to use +round()+ and +microtime()+ :
 
   round(microtime(true) * 1000)
 
+==== Examples
+
+Examples can be found in doc/examples
+
 ===== General your timestamp should only contain 13 digits and NO floating part
 
 == Contributing
