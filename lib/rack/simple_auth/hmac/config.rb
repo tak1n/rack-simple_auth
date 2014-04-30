@@ -8,9 +8,6 @@ module Rack
       # @!attribute [w] tolerance
       #  @return [Fixnum|Float]
       #
-      # @!attribute [w] stepsize
-      #  @return [Fixnum|Float]
-      #
       # @!attribute [w] secret
       #  @return [String]
       #
@@ -27,7 +24,7 @@ module Rack
       #  @return [TrueClass|NilClass]
       #
       class Config < Hash
-        attr_writer :tolerance, :stepsize
+        attr_writer :tolerance
         attr_writer :secret, :signature
 
         attr_accessor :verbose
@@ -47,22 +44,16 @@ module Rack
         # Tolerance Attribute with nil guard
         #
         # @return [Fixnum] tolerance
+        #
         def tolerance
           @tolerance || 1000
-        end
-
-        ##
-        # Stepsize Attribute with nil guard
-        #
-        # @return [Fixnum] stepsize
-        def stepsize
-          @stepsize || 1
         end
 
         ##
         # Secret Attribute with nil guard
         #
         # @return [String] secret
+        #
         def secret
           @secret || ''
         end
@@ -71,6 +62,7 @@ module Rack
         # Signature Attribute with nil guard
         #
         # @return [String] signature
+        #
         def signature
           @signature || ''
         end

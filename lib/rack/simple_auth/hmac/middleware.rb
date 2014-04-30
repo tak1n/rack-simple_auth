@@ -16,8 +16,7 @@ module Rack
       #    }
       #
       #    use Rack::SimpleAuth::HMAC::Middleware do |options|
-      #      options.tolerance = 0.5
-      #      options.stepsize  = 0.01
+      #      options.tolerance = 1500
       #
       #      options.secret = 'test_secret'
       #      options.signature = 'test_signature'
@@ -58,9 +57,6 @@ module Rack
           @app, @config = app, Config.new
 
           yield @config if block_given?
-
-          valid_stepsize?(0.01)
-          valid_tolerance?
         end
 
         ##
@@ -135,7 +131,7 @@ module Rack
         end
 
         ##
-        # Builds Array of allowed message hashs between @tolerance foreach @stepsize via {#message}
+        # Builds Array of allowed message hashs between @tolerance via {#message}
         #
         # @return [Array]
         def allowed_messages
@@ -143,7 +139,7 @@ module Rack
 
           # Timestamp with milliseconds as Fixnum
           date = (Time.now.to_f.freeze * 1000).to_i
-          (-(@config.tolerance)..@config.tolerance).step(@config.stepsize) do |i|
+          (-(@config.tolerance)..@config.tolerance).step(1) do |i|
             messages << OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @config.secret, message(date, i))
           end
 
@@ -198,26 +194,6 @@ module Rack
             msg << "Auth Signature: #{@config.signature}"
 
             Rack::SimpleAuth::Logger.log(@config.logpath, @config.verbose, ENV['RACK_ENV'], msg)
-          end
-        end
-
-        ##
-        # Check if Stepsize is valid, if > min ensure stepsize is min stepsize
-        # check @config.stepsize < min
-        #
-        # @param [float] min [minimum allowed stepsize]
-        #
-        def valid_stepsize?(min)
-          fail "Minimum allowed stepsize is #{min}" if @config.stepsize < min
-        end
-
-        ##
-        # Check if tolerance is valid, tolerance must be greater than stepsize
-        # check @config.tolerance < @config.stepsize
-        #
-        def valid_tolerance?
-          if @config.tolerance < @config.stepsize
-            fail "Tolerance must be greater than stepsize - Tolerance: #{@config.tolerance}, Stepsize: #{@config.stepsize}"
           end
         end
       end # Middleware
