@@ -179,6 +179,10 @@ module Rack
         #   - time when request was made
         #   - type of request
         #   - requested path
+        #
+        # Note: This is kinda slow under Rubinius 
+        #   (Rack::SimpleAuth::Logger.log has IO action, i think there are some performance issues)
+        #
         def log
           if @config.logpath
             msg =  "#{Time.new} - #{@request.request_method} #{@request.path} - 400 Unauthorized\n"
