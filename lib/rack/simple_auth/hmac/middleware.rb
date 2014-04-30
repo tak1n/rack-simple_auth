@@ -66,6 +66,7 @@ module Rack
         #
         def call(env)
           @request = Rack::Request.new(env)
+          @allowed_messages = allowed_messages
 
           if valid_request?
             @app.call(env)
@@ -109,7 +110,7 @@ module Rack
         # @return [FalseClass] if request is not authorized
         #
         def authorized?
-          request_signature.eql?(@config.signature) && allowed_messages.include?(request_message)
+          request_signature.eql?(@config.signature) && @allowed_messages.include?(request_message)
         end
 
         ##
@@ -137,6 +138,7 @@ module Rack
         def allowed_messages
           messages = []
 
+          puts 'allowed_messages called'
           # Timestamp with milliseconds as Fixnum
           date = (Time.now.to_f.freeze * 1000).to_i
           (-(@config.tolerance)..@config.tolerance).step(1) do |i|
@@ -184,9 +186,9 @@ module Rack
             msg << "HTTP_AUTHORIZATION: #{@request.env['HTTP_AUTHORIZATION']}\n"
             msg << "Auth Message Config: #{@config.request_config[@request.request_method]}\n"
 
-            if allowed_messages
+            if @allowed_messages
               msg << "Allowed Encrypted Messages:\n"
-              allowed_messages.each do |hash|
+              @allowed_messages.each do |hash|
                 msg << "#{hash}\n"
               end
             end
