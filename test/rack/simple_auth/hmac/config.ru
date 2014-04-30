@@ -16,6 +16,7 @@ use Rack::SimpleAuth::HMAC::Middleware do |options|
   options.signature = 'test_signature'
 
   # options.logpath = "#{File.expand_path('..', __FILE__)}/logs"
+  # options.verbose = true
   options.request_config = request_config
 end
 

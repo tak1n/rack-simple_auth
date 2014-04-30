@@ -43,6 +43,3 @@ end
 Rack::SimpleAuth::HMAC.testapp = Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/rack/simple_auth/hmac/config.ru").first
 Rack::SimpleAuth::HMAC.failapp = Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/rack/simple_auth/hmac/config_fail.ru").first
 Rack::SimpleAuth::HMAC.failrunapp = Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/rack/simple_auth/hmac/config_fail_run.ru").first
-
-@logpath = "#{File.expand_path("..", __FILE__)}/logs"
-system("mkdir #{@logpath}")
