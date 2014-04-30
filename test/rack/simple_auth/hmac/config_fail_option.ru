@@ -15,7 +15,7 @@ use Rack::SimpleAuth::HMAC::Middleware do |options|
   options.secret = 'test_secret'
   options.signature = 'test_signature'
 
-  options.logpath = "#{File.expand_path('..', __FILE__)}/logs"
+  # options.logpath = "#{File.expand_path('..', __FILE__)}/logs"
   options.request_config = request_config
   options.unknown_option = 'unknown'
 end
