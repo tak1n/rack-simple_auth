@@ -140,7 +140,7 @@ module Rack
 
           # Timestamp with milliseconds as Fixnum
           date = (Time.now.to_f.freeze * 1000).to_i
-          (-(@config.tolerance)..@config.tolerance).step(1) do |i|
+          (-(@config.tolerance)..0).step(1) do |i|
             messages << OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @config.secret, message(date, i))
           end
 
