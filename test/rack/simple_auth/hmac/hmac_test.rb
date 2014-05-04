@@ -57,6 +57,16 @@ class HMACTest < MiniTest::Unit::TestCase
     assert_equal(401, last_response.status, 'Delay not in tolerance range should receive 401')
   end
 
+  def test_get_with_timestamp_in_future
+    uri = '/'
+    message = { 'method' => 'GET', 'date' => now + 1500, 'data' => uri }.to_json
+    hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
+
+    get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
+
+    assert_equal(401, last_response.status, 'Request with timestamp in the future should receive 401')
+  end
+
   def test_get_with_wrong_step
     uri = '/'
     message = { 'method' => 'GET', 'date' => now + 0.035, 'data' => uri }.to_json
