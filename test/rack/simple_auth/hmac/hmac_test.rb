@@ -1,7 +1,7 @@
 require 'test_helper.rb'
 
 # Test HMAC Authorization Method
-class HMACTest < MiniTest::Unit::TestCase
+class HMACTest < Minitest::Test
   include Rack::Test::Methods
 
   def setup
