@@ -21,3 +21,11 @@ matrix:
     - rvm: 2.1.0
 
 script:  "env COVERAGE=true bundle exec rake"
+
+notifications:
+  email:
+    recipients:
+      - r3qnbenni@gmail.com
+    email:
+      on_failure: change
+      on_success: change
