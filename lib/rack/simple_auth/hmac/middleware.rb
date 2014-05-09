@@ -180,7 +180,7 @@ module Rack
         #   - type of request
         #   - requested path
         #
-        # Note: This is kinda slow under Rubinius 
+        # Note: This is kinda slow under Rubinius
         #   (Rack::SimpleAuth::Logger.log has IO action, i think there are some performance issues)
         #
         def log
