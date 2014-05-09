@@ -1,10 +1,8 @@
 require 'spec_helper'
 
 describe Rack::SimpleAuth::HMAC do
-  before(:all) do
-    @secret    = 'test_secret'
-    @signature = 'test_signature'
-  end
+  let(:secret)    { 'test_secret' }
+  let(:signature) { 'test_signature' }
 
   def app
     Rack::SimpleAuth::HMAC.testapp
@@ -29,9 +27,9 @@ describe Rack::SimpleAuth::HMAC do
       it 'should return status 401 (Too Big Delay)' do
         uri = '/'
         message = { 'method' => 'GET', 'date' => now - 5000, 'data' => uri }.to_json
-        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
+        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, message)
 
-        get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
+        get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{signature}"
 
         expect(last_response.status).to eq(401)
       end
@@ -39,9 +37,9 @@ describe Rack::SimpleAuth::HMAC do
       it 'should return status 401 (Contains Futire Timestamp)' do
         uri = '/'
         message = { 'method' => 'GET', 'date' => now + 1500, 'data' => uri }.to_json
-        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
+        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, message)
 
-        get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
+        get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{signature}"
 
         expect(last_response.status).to eq(401)
       end
@@ -49,9 +47,9 @@ describe Rack::SimpleAuth::HMAC do
       it 'should return status 401 (Wrong Stepsize)' do
         uri = '/'
         message = { 'method' => 'GET', 'date' => now + 0.035, 'data' => uri }.to_json
-        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
+        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, message)
 
-        get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
+        get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{signature}"
 
         expect(last_response.status).to eq(401)
       end
@@ -61,9 +59,9 @@ describe Rack::SimpleAuth::HMAC do
       it 'should return status 200' do
         uri = '/'
         message = { 'method' => 'GET', 'date' => now, 'data' => uri }.to_json
-        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
+        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, message)
 
-        get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
+        get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{signature}"
 
         expect(last_response.status).to eq(200)
       end
@@ -71,9 +69,9 @@ describe Rack::SimpleAuth::HMAC do
       it 'should return status 200 (In Tolerance Range)' do
         uri = '/'
         message = { 'method' => 'GET', 'date' => now - 200, 'data' => uri }.to_json
-        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
+        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, message)
 
-        get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
+        get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{signature}"
 
         expect(last_response.status).to eq(200)
       end
@@ -92,9 +90,9 @@ describe Rack::SimpleAuth::HMAC do
       it 'should return status 200' do
         params = { 'name' => 'Bensn' }
         message = { 'method' => 'POST', 'date' => now, 'data' => params }.to_json
-        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
+        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, message)
 
-        post '/', params, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
+        post '/', params, 'HTTP_AUTHORIZATION' => "#{hash}:#{signature}"
 
         expect(last_response.status).to eq(200)
       end
@@ -113,9 +111,9 @@ describe Rack::SimpleAuth::HMAC do
       it 'should return status 200' do
         uri = '/'
         message = { 'method' => 'DELETE', 'date' => now, 'data' => uri }.to_json
-        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
+        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, message)
 
-        delete uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
+        delete uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{signature}"
 
         expect(last_response.status).to eq(200)
       end
@@ -134,9 +132,9 @@ describe Rack::SimpleAuth::HMAC do
       it 'should return status 200' do
         uri = '/'
         message = { 'method' => 'PUT', 'date' => now, 'data' => uri }.to_json
-        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
+        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, message)
 
-        put uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
+        put uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{signature}"
 
         expect(last_response.status).to eq(200)
       end
@@ -155,9 +153,9 @@ describe Rack::SimpleAuth::HMAC do
       it 'should return status 200 fora patch request with a valid auth header' do
         uri = '/'
         message = { 'method' => 'PATCH', 'date' => now, 'data' => uri }.to_json
-        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
+        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, message)
 
-        patch uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
+        patch uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{signature}"
 
         expect(last_response.status).to eq(200)
       end
