@@ -11,6 +11,8 @@ namespace :test do
     # t.verbose = true
   # end
 
+  RSpec::Core::RakeTask.new('spec')
+
   # Cucumber::Rake::Task.new(:feature) do |t|
     # t.cucumber_opts = "features --format pretty"
   # end
