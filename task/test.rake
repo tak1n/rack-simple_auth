@@ -18,7 +18,8 @@ namespace :test do
   # end
 
   task :cleanup do
-    system("rm -rf #{File.expand_path('../../', __FILE__)}/test/rack/simple_auth/hmac/logs")
+    system("rm -rf #{File.expand_path('../../', __FILE__)}/test/rack/simple_auth/hmac/logs") if Dir.exist?("#{File.expand_path('../../', __FILE__)}/test/rack/simple_auth/hmac/logs")
+    system("rm -rf #{File.expand_path('../../', __FILE__)}/spec/rack/simple_auth/hmac/logs") if Dir.exist?("#{File.expand_path('../../', __FILE__)}/spec/rack/simple_auth/hmac/logs")
   end
 end
 
