@@ -2,20 +2,26 @@ ENV['RACK_ENV'] = 'test'
 
 require 'simplecov'
 require 'coveralls'
+require 'codeclimate-test-reporter'
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
   SimpleCov::Formatter::HTMLFormatter,
   Coveralls::SimpleCov::Formatter
 ]
 
-SimpleCov.start do
-  project_name 'rack-simple_auth'
-  add_filter '/test/'
-  add_filter '/pkg/'
-  add_filter '/spec/'
-  add_filter '/features/'
-  add_filter '/doc/'
-end if ENV['COVERAGE']
+if ENV['COVERAGE']
+  SimpleCov.start do
+    project_name 'rack-simple_auth'
+    add_filter '/test/'
+    add_filter '/pkg/'
+    add_filter '/spec/'
+    add_filter '/features/'
+    add_filter '/doc/'
+  end
+
+  ENV['CODECLIMATE_REPO_TOKEN'] = 'e833eff1a2df486fb7d7ed6025102ddaddb5ef95185b2befd3975f55a244b856'
+  CodeClimate::TestReporter.start
+end
 
 # Minitest
 require 'minitest/autorun'

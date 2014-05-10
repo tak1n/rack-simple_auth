@@ -2,20 +2,25 @@ ENV['RACK_ENV'] = 'test'
 
 require 'simplecov'
 require 'coveralls'
+require 'codeclimate-test-reporter'
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
   SimpleCov::Formatter::HTMLFormatter,
   Coveralls::SimpleCov::Formatter
 ]
 
-SimpleCov.start do
-  project_name 'rack-simple_auth'
-  add_filter '/test/'
-  add_filter '/pkg/'
-  add_filter '/spec/'
-  add_filter '/features/'
-  add_filter '/doc/'
-end if ENV['COVERAGE']
+if ENV['COVERAGE']
+  SimpleCov.start do
+    project_name 'rack-simple_auth'
+    add_filter '/test/'
+    add_filter '/pkg/'
+    add_filter '/spec/'
+    add_filter '/features/'
+    add_filter '/doc/'
+  end
+
+  CodeClimate::TestReporter.start
+end
 
 # Rack Test Methods
 require 'rspec'
