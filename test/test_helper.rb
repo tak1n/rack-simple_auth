@@ -25,9 +25,6 @@ end
 
 # Minitest
 require 'minitest/autorun'
-require 'minitest/mock'
-require 'minitest/pride' # for colored output
-
 require 'minitest/reporters'
 MiniTest::Reporters.use! MiniTest::Reporters::SpecReporter.new
 
