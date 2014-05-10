@@ -60,12 +60,31 @@ module Rack
         end
 
         ##
-        # call Method for Rack Middleware/Application
+        # Rack API Interface Method
         #
         # @param [Hash] env [Rack Env Hash which contains headers etc..]
         #
         def call(env)
+          call!(env)
+        end
+
+        ##
+        # call! Method
+        #
+        # Using ! because this method isn't a pure function
+        # Creating for example @request & @allowed_messages instance variables
+        #
+        # Also this is a threadsafe approach for rack -> duplicating the current env var
+        #
+        # @param [Hash] env [Rack Env Hash which contains headers etc..]
+        #
+        def call!(env)
+          env = env.dup
           @request = Rack::Request.new(env)
+
+          # This STATE is needed
+          # logging & authorizing have to use the exact same messages, so don't call allowed_messages 2 times
+          # Call it 1 time and save this state
           @allowed_messages = allowed_messages
 
           if valid_request?
@@ -164,6 +183,8 @@ module Rack
         # Get Request Data specified by @config.request_config
         #
         # @return [String|Hash] data
+        #
+        # Note: REFACTOR this shit..
         def request_data
           if @config.request_config[@request.request_method] == 'path' || @config.request_config[@request.request_method] == 'params'
             @request.send(@config.request_config[@request.request_method].to_sym)
