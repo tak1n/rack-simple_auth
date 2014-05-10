@@ -19,7 +19,7 @@ describe 'HMAC Fail Test' do
   end
 
   it 'should fail at instantiation for unknown dsl option' do
-    expect { Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/spec/rack/simple_auth/hmac/config_fail_option.ru").first }
+    expect { Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/spec/configs/config_fail_option.ru").first }
       .to raise_error(RuntimeError)
   end
 end
