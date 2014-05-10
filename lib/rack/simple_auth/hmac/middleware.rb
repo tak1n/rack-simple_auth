@@ -65,7 +65,7 @@ module Rack
         # @param [Hash] env [Rack Env Hash which contains headers etc..]
         #
         def call(env)
-          call!(env)
+          self.dup.call!(env)
         end
 
         ##
@@ -74,7 +74,7 @@ module Rack
         # Using ! because this method isn't a pure function
         # Creating for example @request & @allowed_messages instance variables
         #
-        # Also this is a threadsafe approach for rack -> duplicating the current env var
+        # Also this is a threadsafe approach for rack
         #
         # @param [Hash] env [Rack Env Hash which contains headers etc..]
         #
