@@ -25,6 +25,7 @@ Or install it yourself as:
 {<img src="https://badge.fury.io/rb/rack-simple_auth.png" alt="Gem Version" />}[http://badge.fury.io/rb/rack-simple_auth]
 {<img src="https://gemnasium.com/Benny1992/rack-simple_auth.png" alt="Dependency Status" />}[https://gemnasium.com/Benny1992/rack-simple_auth]
 {<img src="https://www.codeship.io/projects/f2d9d790-b0fe-0131-3fd5-025f180094b5/status" alt="Build Status" />}[https://www.codeship.io/projects/f2d9d790-b0fe-0131-3fd5-025f180094b5/status]
+{<img src="https://codeclimate.com/github/Benny1992/rack-simple_auth.png" />}[https://codeclimate.com/github/Benny1992/rack-simple_auth]
 
 == Usage
 
