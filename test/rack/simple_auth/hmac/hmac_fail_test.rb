@@ -22,7 +22,7 @@ class HMACFailTest < Minitest::Test
   end
 
   def test_unknown_dsl_option
-    assert_raises(RuntimeError) { Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/rack/simple_auth/hmac/config_fail_option.ru").first }
+    assert_raises(RuntimeError) { Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/configs/config_fail_option.ru").first }
   end
 
   def teardown
