@@ -2,7 +2,6 @@ desc 'Generates the MANIFEST file'
 task :manifest do
   FILE_LIST = FileList.new(
     'checksum/**/*.*',
-    'doc/**/*.*',
     'lib/**/*.*',
     'LICENSE.txt',
     'MANIFEST',
