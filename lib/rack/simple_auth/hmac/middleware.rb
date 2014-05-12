@@ -186,11 +186,28 @@ module Rack
         #
         # Note: REFACTOR this shit..
         def request_data
-          if @config.request_config[@request.request_method] == 'path' || @config.request_config[@request.request_method] == 'params'
-            @request.send(@config.request_config[@request.request_method].to_sym)
-          else
-            fail "Not a valid option #{@config.request_config[@request.request_method]} - Use either params or path"
-          end
+          return @request.send(@config.request_config[method].to_sym) if valid_message_type?
+
+          fail "Not a valid option #{@config.request_config[method]} - Use either params or path"
+        end
+
+        ##
+        # Request method for current request
+        #
+        # @return [String] Request Method [GET|POST|PUT|DELETE|PATCH]
+        #
+        def method
+          @request.request_method
+        end
+
+        ##
+        # Check if message type for current request is valid
+        #
+        # @return [TrueClass] if message type for current request is path or params
+        # @return [FalseClass] if message type is invalid
+        #
+        def valid_message_type?
+          @config.request_config[method] == 'path' || @config.request_config[method] == 'params'
         end
 
         ##
