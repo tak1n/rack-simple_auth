@@ -2,7 +2,6 @@ ENV['RACK_ENV'] = 'test'
 
 require 'simplecov'
 require 'coveralls'
-require 'codeclimate-test-reporter'
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
   SimpleCov::Formatter::HTMLFormatter,
@@ -18,9 +17,6 @@ if ENV['COVERAGE']
     add_filter '/features/'
     add_filter '/doc/'
   end
-
-  ENV['CODECLIMATE_REPO_TOKEN'] = 'e833eff1a2df486fb7d7ed6025102ddaddb5ef95185b2befd3975f55a244b856'
-  CodeClimate::TestReporter.start
 end
 
 # Minitest
