@@ -31,23 +31,6 @@ module Rack
       #
       class Middleware
         ##
-        # Throw NoMethodError and give hint if method who was called is Rack::SimpleAuth::Middleware.call
-        #
-        # @param [Symbol] name
-        # @param [Array] args
-        #
-        # @raise [NoMethodError] if the method isn't defined
-        #   and outputs additional hint for calling Rack::SimpleAuth::Middleware.call
-        def self.method_missing(name, *args)
-          msg = "Did you try to use HMAC Middleware as Rack Application via 'run'?\n" if name.eql?(:call)
-          msg << "method: #{name}\n"
-          msg << "args: #{args.inspect}\n" unless name.eql?(:call)
-          msg << "on: #{self}"
-
-          fail NoMethodError, msg
-        end
-
-        ##
         # Constructor for Rack Middleware (passing the rack stack)
         #
         # @param [Rack Application] app [next middleware or rack app which gets called]
