@@ -78,7 +78,7 @@ module Rack
           end
         end
 
-        private
+      private
 
         ##
         # Checks for valid HMAC Request
