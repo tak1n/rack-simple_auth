@@ -3,14 +3,8 @@ require 'spec_helper'
 describe Rack::SimpleAuth::HMAC do
   let(:secret)    { 'test_secret' }
   let(:signature) { 'test_signature' }
-
-  def app
-    Rack::SimpleAuth::HMAC.testapp
-  end
-
-  def now
-    (Time.now.to_f * 1000).to_i
-  end
+  let(:app) { Rack::SimpleAuth::HMAC.testapp }
+  let(:now) { (Time.now.to_f * 1000).to_i }
 
   describe 'GET Request' do
     context 'when not valid' do
