@@ -144,7 +144,7 @@ describe Rack::SimpleAuth::HMAC do
     end
 
     context 'when valid' do
-      it 'should return status 200 fora patch request with a valid auth header' do
+      it 'should return status 200' do
         uri = '/'
         message = { 'method' => 'PATCH', 'date' => now, 'data' => uri }.to_json
         hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, message)
