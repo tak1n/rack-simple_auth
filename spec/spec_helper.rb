@@ -34,7 +34,7 @@ require 'rack/simple_auth'
 # configure rspec to include rack-test
 RSpec.configure do |conf|
   conf.include Rack::Test::Methods
-  conf.color_enabled = true
+  conf.color = true
 end
 
 module Rack
