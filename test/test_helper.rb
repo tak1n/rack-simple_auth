@@ -21,8 +21,7 @@ end
 
 # Minitest
 require 'minitest/autorun'
-require 'minitest/reporters'
-MiniTest::Reporters.use! MiniTest::Reporters::SpecReporter.new
+require 'minitest/pride'
 
 # Rack Test Methods
 require 'rack/test'
