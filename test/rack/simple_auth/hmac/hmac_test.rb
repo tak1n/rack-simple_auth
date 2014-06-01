@@ -138,5 +138,6 @@ class HMACTest < Minitest::Test
   end
 
   def teardown
+    system("rm -rf #{Rack::SimpleAuth.root}/test/configs/logs")
   end
 end

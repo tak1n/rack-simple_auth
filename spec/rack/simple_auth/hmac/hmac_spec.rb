@@ -6,6 +6,10 @@ describe Rack::SimpleAuth::HMAC do
   let(:app) { Rack::SimpleAuth::HMAC.testapp }
   let(:now) { (Time.now.to_f * 1000).to_i }
 
+  after(:all) do
+    system("rm -rf #{Rack::SimpleAuth.root}/spec/configs/logs")
+  end
+
   describe 'GET Request' do
     context 'when not valid' do
       it 'should return status 401 (No Auth Header)' do

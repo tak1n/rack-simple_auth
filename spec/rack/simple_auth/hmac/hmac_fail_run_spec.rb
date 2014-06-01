@@ -6,6 +6,10 @@ describe 'HMAC Middleware as Rack Application' do
     @signature = 'test_signature'
   end
 
+  after(:all) do
+    system("rm -rf #{Rack::SimpleAuth.root}/spec/configs/logs")
+  end
+
   def app
     Rack::SimpleAuth::HMAC.failrunapp
   end

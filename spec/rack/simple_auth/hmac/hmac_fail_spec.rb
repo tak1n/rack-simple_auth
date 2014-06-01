@@ -6,6 +6,10 @@ describe 'HMAC Fail Test' do
     @secret    = 'test_secret'
   end
 
+  after(:all) do
+    system("rm -rf #{Rack::SimpleAuth.root}/spec/configs/logs")
+  end
+
   def app
     Rack::SimpleAuth::HMAC.failapp
   end
