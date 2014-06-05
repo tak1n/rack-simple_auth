@@ -13,13 +13,13 @@ rvm:
   - 2.1.2
   - ruby-head
   - jruby
-  - rbx
+  - rbx-2
 
 matrix:
   allow_failures:
     - rvm: jruby
     - rvm: ruby-head
-    - rvm: rbx
+    - rvm: rbx-2
 
 script:
   - "env COVERAGE=true bundle exec rspec"
