@@ -23,7 +23,7 @@ module Rack
       # @!attribute [rw] verbose
       #  @return [TrueClass|NilClass]
       #
-      class Config < Hash
+      class Config
         attr_writer :tolerance
         attr_writer :secret, :signature
 
