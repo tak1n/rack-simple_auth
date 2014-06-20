@@ -111,7 +111,7 @@ For PHP you have to use +round()+ and +microtime()+ :
 
 ==== Examples
 
-Examples can be found in doc/examples
+Examples can be found in examples dir
 
 == Contributing
 
