@@ -20,6 +20,7 @@ if ENV['COVERAGE']
 end
 
 # Minitest
+gem 'minitest'
 require 'minitest/autorun'
 require 'minitest/reporters'
 
