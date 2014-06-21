@@ -23,7 +23,7 @@ matrix:
     - rvm: rbx-2
 
 script:
-  # - "env COVERAGE=true bundle exec rspec"
+  - "COVERAGE=true rspec"
   - "COVERAGE=true bin/test_runner"
 
 notifications:
