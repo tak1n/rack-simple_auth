@@ -11,7 +11,7 @@ describe Rack::SimpleAuth::HMAC do
   end
 
   after do
-    system("rm -rf #{Rack::SimpleAuth.root}/test/configs/logs")
+    system("rm -rf #{Rack::SimpleAuth.root}/spec/configs/logs")
   end
 
   it "should fail at request time for unknown param option" do

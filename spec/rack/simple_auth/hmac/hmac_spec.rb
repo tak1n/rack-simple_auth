@@ -12,7 +12,7 @@ describe Rack::SimpleAuth::HMAC do
   end
 
   after do
-    system("rm -rf #{Rack::SimpleAuth.root}/test/configs/logs")
+    system("rm -rf #{Rack::SimpleAuth.root}/spec/configs/logs")
   end
 
   describe "GET Request" do
