@@ -2,6 +2,8 @@ require 'spec_helper'
 
 # Test HMAC Authorization Method
 describe Rack::SimpleAuth::HMAC do
+  parallelize_me!
+
   def app
     Minitest::Spec.testapp
   end

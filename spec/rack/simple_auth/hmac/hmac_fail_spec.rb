@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Rack::SimpleAuth::HMAC do
+  parallelize_me!
+
   def app
     Minitest::Spec.failapp
   end
