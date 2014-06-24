@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+if __FILE__ == $0
+  $LOAD_PATH.unshift('lib', 'spec')
+  fast_tests = `find ./spec -name *_test.rb -print | xargs grep -l "spec_helper"`
+
+  Dir.glob(fast_tests.split("\n")) { |f| require f }
+end

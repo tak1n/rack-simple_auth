@@ -1,26 +1,27 @@
-require 'spec_helper'
+require 'spec_helper.rb'
 
-describe 'HMAC Middleware as Rack Application' do
-  before(:all) do
-    @secret    = 'test_secret'
-    @signature = 'test_signature'
-  end
-
-  after(:all) do
-    system("rm -rf #{Rack::SimpleAuth.root}/spec/configs/logs")
-  end
-
+class Minitest::Spec
   def app
-    Rack::SimpleAuth::HMAC.failrunapp
+    failrunapp
+  end
+end
+
+describe Rack::SimpleAuth::HMAC do
+  before do
+    @secret = "test_secret"
+    @signature = "test_signature"
   end
 
-  it 'should not be runnable' do
+  after do
+    system("rm -rf #{Rack::SimpleAuth.root}/test/configs/logs")
+  end
+
+  it "should not be runnable" do
     uri = '/'
     content = { 'method' => 'GET', 'data' => uri }.to_json
     hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, content)
 
-    expect { get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}" }.to raise_error(NoMethodError)
-  end
+    Proc.new { get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}" }
+      .must_raise(NoMethodError)
+   end
 end
-
-

@@ -2,7 +2,6 @@ ENV['RACK_ENV'] = 'test'
 
 require 'simplecov'
 require 'coveralls'
-require 'codeclimate-test-reporter'
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
   SimpleCov::Formatter::HTMLFormatter,
@@ -18,12 +17,17 @@ if ENV['COVERAGE']
     add_filter '/features/'
     add_filter '/doc/'
   end
-
-  CodeClimate::TestReporter.start
 end
 
+# Minitest
+gem 'minitest'
+require 'minitest/autorun'
+require 'minitest/reporters'
+
+reporter_options = { color: true, slow_count: 5 }
+Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(reporter_options)]
+
 # Rack Test Methods
-require 'rspec'
 require 'rack/test'
 
 require 'json'
@@ -31,23 +35,22 @@ require 'json'
 # Load gem
 require 'rack/simple_auth'
 
-# configure rspec to include rack-test
-RSpec.configure do |conf|
-  conf.include Rack::Test::Methods
-  conf.color = true
-end
+class Minitest::Spec
+  include Rack::Test::Methods
 
-module Rack
-  module SimpleAuth
-    module HMAC
-      class << self
-        attr_accessor :testapp, :failapp, :failrunapp
-      end
-    end
+  def testapp
+    Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/configs/config.ru").first
+  end
+
+  def failapp
+    Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/configs/config_fail.ru").first
+  end
+
+  def failrunapp
+    Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/test/configs/config_fail_run.ru").first
+  end
+
+  def now
+    (Time.now.to_f * 1000).to_i
   end
 end
-
-Rack::SimpleAuth::HMAC.testapp = Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/spec/configs/config.ru").first
-Rack::SimpleAuth::HMAC.failapp = Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/spec/configs/config_fail.ru").first
-Rack::SimpleAuth::HMAC.failrunapp = Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/spec/configs/config_fail_run.ru").first
-

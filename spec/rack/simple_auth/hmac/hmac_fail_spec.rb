@@ -1,29 +1,31 @@
-require 'spec_helper'
+require 'spec_helper.rb'
 
-describe 'HMAC Fail Test' do
-  before(:all) do
-    @signature = 'test_signature'
-    @secret    = 'test_secret'
-  end
-
-  after(:all) do
-    system("rm -rf #{Rack::SimpleAuth.root}/spec/configs/logs")
-  end
-
+class Minitest::Spec
   def app
-    Rack::SimpleAuth::HMAC.failapp
+    failapp
+  end
+end
+
+describe Rack::SimpleAuth::HMAC do
+  before do
+    @signature = "test_signature"
+    @secret = "test_secret"
   end
 
-  it 'should fail at request time for unknown param option' do
+  after do
+    system("rm -rf #{Rack::SimpleAuth.root}/test/configs/logs")
+  end
+
+  it "should fail at request time for unknown param option" do
     uri = '/'
     content = { 'method' => 'GET', 'data' => uri }.to_json
     hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, content)
 
-    expect { get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}" }.to raise_error(RuntimeError)
+    Proc.new { get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}" }.must_raise(RuntimeError)
   end
 
-  it 'should fail at instantiation for unknown dsl option' do
-    expect { Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/spec/configs/config_fail_option.ru").first }
-      .to raise_error(RuntimeError)
+  it "should fail at instantiation for unknown dsl option" do
+    Proc.new { Rack::Builder.parse_file("#{Rack::SimpleAuth.root}/spec/configs/config_fail_option.ru").first }
+      .must_raise(RuntimeError)
   end
 end

@@ -1,161 +1,186 @@
 require 'spec_helper'
 
-describe Rack::SimpleAuth::HMAC do
-  let(:secret)    { 'test_secret' }
-  let(:signature) { 'test_signature' }
-  let(:app) { Rack::SimpleAuth::HMAC.testapp }
-  let(:now) { (Time.now.to_f * 1000).to_i }
+class Minitest::Spec
+  def app
+    testapp
+  end
+end
 
-  after(:all) do
-    system("rm -rf #{Rack::SimpleAuth.root}/spec/configs/logs")
+# Test HMAC Authorization Method
+describe Rack::SimpleAuth::HMAC do
+  parallelize_me!
+
+  before do
+    @secret = "test_secret"
+    @signature = "test_signature"
   end
 
-  describe 'GET Request' do
-    context 'when not valid' do
-      it 'should return status 401 (No Auth Header)' do
+  after do
+    system("rm -rf #{Rack::SimpleAuth.root}/test/configs/logs")
+  end
+
+  describe "GET Request" do
+    describe "without auth header" do
+      it "should receive 401" do
         get '/'
-        expect(last_response.status).to eq(401)
-      end
 
-      it 'should return status 401 (Wrong Auth Header)' do
+        last_response.status.must_equal 401
+      end
+    end
+
+    describe "wrong auth header" do
+      it "should receive 401" do
         get '/', {}, 'HTTP_AUTHORIZATION' => 'wrong_header'
-        expect(last_response.status).to eq(401)
-      end
 
-      it 'should return status 401 (Too Big Delay)' do
+        last_response.status.must_equal 401
+      end
+    end
+
+    describe "too big delay in header timestamp" do
+      it "should receive 401" do
         uri = '/'
         message = { 'method' => 'GET', 'date' => now - 5000, 'data' => uri }.to_json
-        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, message)
+        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
 
-        get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{signature}"
+        get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
-        expect(last_response.status).to eq(401)
+        last_response.status.must_equal 401
       end
+    end
 
-      it 'should return status 401 (Contains Futire Timestamp)' do
+    describe "contains future timestamp in header" do
+      it "should receive 401" do
         uri = '/'
         message = { 'method' => 'GET', 'date' => now + 1500, 'data' => uri }.to_json
-        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, message)
+        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
 
-        get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{signature}"
+        get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
-        expect(last_response.status).to eq(401)
+        last_response.status.must_equal 401
       end
+    end
 
-      it 'should return status 401 (Wrong Stepsize)' do
+    describe "contains wrong stepsize for timestamp in header" do
+      it "should receive 401" do
         uri = '/'
         message = { 'method' => 'GET', 'date' => now + 0.035, 'data' => uri }.to_json
-        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, message)
+        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
 
-        get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{signature}"
+        get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
-        expect(last_response.status).to eq(401)
+        last_response.status.must_equal 401
       end
     end
 
-    context 'when valid' do
-      it 'should return status 200' do
+    describe "with valid header" do
+      it "should receive 200" do
         uri = '/'
         message = { 'method' => 'GET', 'date' => now, 'data' => uri }.to_json
-        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, message)
+        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
 
-        get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{signature}"
+        get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
-        expect(last_response.status).to eq(200)
+        last_response.status.must_equal 200
       end
+    end
 
-      it 'should return status 200 (In Tolerance Range)' do
+    describe "with timestamp in header in tolerance range" do
+      it "should receive 200" do
         uri = '/'
         message = { 'method' => 'GET', 'date' => now - 200, 'data' => uri }.to_json
-        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, message)
+        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
 
-        get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{signature}"
+        get uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
-        expect(last_response.status).to eq(200)
+        last_response.status.must_equal 200
       end
     end
   end
 
-  describe 'POST Request' do
-    context 'when invalid' do
-      it 'should return status 401 (Wrong Header)' do
+  describe "POST Request" do
+    describe "when invalid" do
+      it "should receive 401" do
         post '/', { 'name' => 'Bensn' }, 'HTTP_AUTHORIZATION' => 'wrong_header'
-        expect(last_response.status).to eq(401)
+
+        last_response.status.must_equal 401
       end
     end
 
-    context 'when valid' do
-      it 'should return status 200' do
+    describe "when valid" do
+      it "should receive 200" do
         params = { 'name' => 'Bensn' }
         message = { 'method' => 'POST', 'date' => now, 'data' => params }.to_json
-        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, message)
+        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
 
-        post '/', params, 'HTTP_AUTHORIZATION' => "#{hash}:#{signature}"
+        post '/', params, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
-        expect(last_response.status).to eq(200)
+        last_response.status.must_equal 200
       end
     end
   end
 
-  describe 'DELETE Request' do
-    context 'when invalid' do
-      it 'should return status 401 (Wrong Header)' do
+  describe "DELETE Request" do
+    describe "when invalid" do
+      it "should receive 401" do
         delete '/', {}, 'HTTP_AUTHORIZATION' => 'wrong_header'
-        expect(last_response.status).to eq(401)
+
+        last_response.status.must_equal 401
       end
     end
 
-    context 'when valid' do
-      it 'should return status 200' do
+    describe "when valid" do
+      it "should receive 200" do
         uri = '/'
         message = { 'method' => 'DELETE', 'date' => now, 'data' => uri }.to_json
-        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, message)
+        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
 
-        delete uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{signature}"
+        delete uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
-        expect(last_response.status).to eq(200)
+        last_response.status.must_equal 200
       end
     end
   end
 
-  describe 'PUT Request' do
-    context 'when invalid' do
-      it 'should return status 401 (Wrong Header)' do
+  describe "PUT Request" do
+    describe "when invalid" do
+      it "should receive 401" do
         put '/', {}, 'HTTP_AUTHORIZATION' => 'wrong_header'
-        expect(last_response.status).to eq(401)
+
+        last_response.status.must_equal 401
       end
     end
 
-    context 'when valid' do
-      it 'should return status 200' do
+    describe "when valid" do
+      it "should receive 200" do
         uri = '/'
         message = { 'method' => 'PUT', 'date' => now, 'data' => uri }.to_json
-        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, message)
+        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
 
-        put uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{signature}"
+        put uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
-        expect(last_response.status).to eq(200)
+        last_response.status.must_equal 200
       end
     end
   end
 
-  describe 'PATCH Request' do
-    context 'when invalid' do
-      it 'should return status 401 (Wrong Header)' do
+  describe "PATCH Request" do
+    describe "when invalid" do
+      it "should receive 401" do
         patch '/', {}, 'HTTP_AUTHORIZATION' => 'wrong_header'
-        expect(last_response.status).to eq(401)
+
+        last_response.status.must_equal 401
       end
     end
 
-    context 'when valid' do
-      it 'should return status 200' do
+    describe "when valid" do
+      it "should receive 200" do
         uri = '/'
         message = { 'method' => 'PATCH', 'date' => now, 'data' => uri }.to_json
-        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), secret, message)
+        hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @secret, message)
 
-        patch uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{signature}"
+        patch uri, {}, 'HTTP_AUTHORIZATION' => "#{hash}:#{@signature}"
 
-        expect(last_response.status).to eq(200)
+        last_response.status.must_equal 200
       end
     end
   end
