@@ -1,12 +1,10 @@
-require 'spec_helper.rb'
-
-class Minitest::Spec
-  def app
-    failapp
-  end
-end
+require 'spec_helper'
 
 describe Rack::SimpleAuth::HMAC do
+  def app
+    Minitest::Spec.failapp
+  end
+
   before do
     @signature = "test_signature"
     @secret = "test_secret"

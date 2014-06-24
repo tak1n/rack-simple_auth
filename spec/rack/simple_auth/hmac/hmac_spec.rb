@@ -1,14 +1,10 @@
 require 'spec_helper'
 
-class Minitest::Spec
-  def app
-    testapp
-  end
-end
-
 # Test HMAC Authorization Method
 describe Rack::SimpleAuth::HMAC do
-  parallelize_me!
+  def app
+    Minitest::Spec.testapp
+  end
 
   before do
     @secret = "test_secret"
