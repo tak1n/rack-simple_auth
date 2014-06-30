@@ -22,7 +22,7 @@ matrix:
     - rvm: ruby-head
 
 script:
-  - "COVERAGE=true bundle exec bin/test_runner"
+  - "COVERAGE=true bundle exec bin/spec_runner"
 
 notifications:
   email:
