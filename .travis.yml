@@ -14,16 +14,15 @@ rvm:
   - 2.1.2
   - ruby-head
   - jruby
-  - rbx-2
+  - rbx-2.2.9
+  - rbx-2.2.10
 
 matrix:
   allow_failures:
-    - rvm: jruby
     - rvm: ruby-head
-    - rvm: rbx-2
 
 script:
-  - "COVERAGE=true bundle exec bin/spec_runner"
+  - "COVERAGE=true bundle exec bin/test_runner"
 
 notifications:
   email:
