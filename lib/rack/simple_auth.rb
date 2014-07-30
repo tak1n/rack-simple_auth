@@ -8,6 +8,7 @@ require 'rack/simple_auth/hmac/response'
 require 'rack/simple_auth/hmac/middleware'
 
 require 'json'
+require 'openssl'
 
 # Rack Module
 module Rack
