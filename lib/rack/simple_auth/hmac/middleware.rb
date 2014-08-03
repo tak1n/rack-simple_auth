@@ -30,6 +30,7 @@ module Rack
       #    run Rack::Lobster.new"
       #
       class Middleware
+        attr_reader :app, :config
         ##
         # Constructor for Rack Middleware (passing the rack stack)
         #
@@ -39,7 +40,7 @@ module Rack
         def initialize(app, &block)
           @app, @config = app, Config.new
 
-          yield @config if block_given?
+          yield config if block_given?
         end
 
         ##
@@ -63,10 +64,10 @@ module Rack
         #
         def call!(env)
           env = env.dup
-          @request = Request.new(env, @config)
+          request = Request.new(env, config)
 
-          if @request.valid?
-            @app.call(env)
+          if request.valid?
+            app.call(env)
           else
             response = Response.new('Unauthorized', 401, 'Content-Type' => 'text/html')
             response.finish
