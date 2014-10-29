@@ -2,10 +2,12 @@ module Rack
   module SimpleAuth
     module HMAC
       class Request < Rack::Request
+        attr_reader :env, :config, :allowed_messages
+
         def initialize(env, config)
           @env = env
           @config = config
-          @allowed_messages = allowed_messages
+          @allowed_messages = build_allowed_messages
         end
 
         ##
@@ -25,16 +27,16 @@ module Rack
       private
 
         ##
-        # Builds Array of allowed message hashs between @tolerance via {#message}
+        # Builds Array of allowed message hashs between tolerance via {#message}
         #
         # @return [Array]
-        def allowed_messages
+        def build_allowed_messages
           messages = []
 
           # Timestamp with milliseconds as Fixnum
           date = (Time.now.to_f.freeze * 1000).to_i
-          (-(@config.tolerance)..0).step(1) do |i|
-            messages << OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @config.secret, build_message(date, i))
+          (-(config.tolerance)..0).step(1) do |i|
+            messages << OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), config.secret, build_message(date, i))
           end
 
           messages
@@ -54,15 +56,15 @@ module Rack
         end
 
         ##
-        # Get Request Data specified by @config.request_config
+        # Get Request Data specified by config.request_config
         #
         # @return [String|Hash] data
         #
         # Note: REFACTOR this shit..
         def data
-          return self.send(@config.request_config[method].to_sym) if valid_message_type?
+          return self.send(config.request_config[method].to_sym) if valid_message_type?
 
-          fail "Not a valid option #{@config.request_config[method]} - Use either params or path"
+          fail "Not a valid option #{config.request_config[method]} - Use either params or path"
         end
 
         ##
@@ -83,7 +85,7 @@ module Rack
         # @return [FalseClass] if request is not authorized
         #
         def authorized?
-          signature.eql?(@config.signature) && @allowed_messages.include?(message)
+          signature.eql?(config.signature) && allowed_messages.include?(message)
         end
 
         ##
@@ -120,11 +122,11 @@ module Rack
         # @return [FalseClass] if message type is invalid
         #
         def valid_message_type?
-          @config.request_config[method] == 'path' || @config.request_config[method] == 'params'
+          config.request_config[method] == 'path' || config.request_config[method] == 'params'
         end
 
         ##
-        # Log to @config.logpath
+        # Log to config.logpath
         # Contains:
         #   - allowed messages and received message
         #   - time when request was made
@@ -137,18 +139,18 @@ module Rack
         def log
           msg =  "#{Time.new} - #{self.request_method} #{self.path} - 400 Unauthorized\n"
           msg << "HTTP_AUTHORIZATION: #{self.env['HTTP_AUTHORIZATION']}\n"
-          msg << "Auth Message Config: #{@config.request_config[self.request_method]}\n"
+          msg << "Auth Message Config: #{config.request_config[self.request_method]}\n"
 
-          if @allowed_messages
+          if allowed_messages
             msg << "Allowed Encrypted Messages:\n"
-            @allowed_messages.each do |hash|
+            allowed_messages.each do |hash|
               msg << "#{hash}\n"
             end
           end
 
-          msg << "Auth Signature: #{@config.signature}"
+          msg << "Auth Signature: #{config.signature}"
 
-          Rack::SimpleAuth::Logger.log(@config.logpath, @config.verbose, ENV['RACK_ENV'], msg)
+          Rack::SimpleAuth::Logger.log(config.logpath, config.verbose, ENV['RACK_ENV'], msg)
         end
       end
     end
