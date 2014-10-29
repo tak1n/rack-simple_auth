@@ -52,7 +52,7 @@ module Rack
         def build_message(date, delay = 0)
           date += delay
 
-          { 'method' => self.request_method, 'date' => date, 'data' => data }.to_json
+          { 'method' => request_method, 'date' => date, 'data' => data }.to_json
         end
 
         ##
@@ -62,9 +62,9 @@ module Rack
         #
         # Note: REFACTOR this shit..
         def data
-          return self.send(config.request_config[method].to_sym) if valid_message_type?
+          return send(config.request_config[request_method].to_sym) if valid_message_type?
 
-          fail "Not a valid option #{config.request_config[method]} - Use either params or path"
+          fail "Not a valid option #{config.request_config[request_method]} - Use either params or path"
         end
 
         ##
@@ -74,7 +74,7 @@ module Rack
         # @return [FalseClass] if header is not set
         #
         def empty_header?
-          self.env['HTTP_AUTHORIZATION'].nil?
+          env['HTTP_AUTHORIZATION'].nil?
         end
 
         ##
@@ -94,7 +94,7 @@ module Rack
         # @return [String] signature of current request
         #
         def signature
-          self.env['HTTP_AUTHORIZATION'].split(':').last
+          env['HTTP_AUTHORIZATION'].split(':').last
         end
 
         ##
@@ -103,16 +103,7 @@ module Rack
         # @return [String] message of current request
         #
         def message
-          self.env['HTTP_AUTHORIZATION'].split(':').first
-        end
-
-        ##
-        # Request method for current request
-        #
-        # @return [String] Request Method [GET|POST|PUT|DELETE|PATCH]
-        #
-        def method
-          self.request_method
+          env['HTTP_AUTHORIZATION'].split(':').first
         end
 
         ##
@@ -122,7 +113,7 @@ module Rack
         # @return [FalseClass] if message type is invalid
         #
         def valid_message_type?
-          config.request_config[method] == 'path' || config.request_config[method] == 'params'
+          config.request_config[request_method] == 'path' || config.request_config[request_method] == 'params'
         end
 
         ##
@@ -137,9 +128,9 @@ module Rack
         #   (Rack::SimpleAuth::Logger.log has IO action, i think there are some performance issues)
         #
         def log
-          msg =  "#{Time.new} - #{self.request_method} #{self.path} - 400 Unauthorized\n"
-          msg << "HTTP_AUTHORIZATION: #{self.env['HTTP_AUTHORIZATION']}\n"
-          msg << "Auth Message Config: #{config.request_config[self.request_method]}\n"
+          msg =  "#{Time.new} - #{request_method} #{path} - 400 Unauthorized\n"
+          msg << "HTTP_AUTHORIZATION: #{env['HTTP_AUTHORIZATION']}\n"
+          msg << "Auth Message Config: #{config.request_config[request_method]}\n"
 
           if allowed_messages
             msg << "Allowed Encrypted Messages:\n"
