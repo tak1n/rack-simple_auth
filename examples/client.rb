@@ -4,7 +4,6 @@ require 'json'
 require 'openssl'
 
 url = URI.parse("http://localhost:9292/")
-params = { :name => "ruby" }
 
 req = Net::HTTP::Get.new(url.path)
 
