@@ -30,17 +30,15 @@ module Rack
       #    run Rack::Lobster.new"
       #
       class Middleware
-        attr_reader :app, :config
         ##
         # Constructor for Rack Middleware (passing the rack stack)
         #
         # @param [Rack Application] app [next middleware or rack app which gets called]
-        # @param [Proc] block [the dsl block which will be yielded into the config object]
         #
-        def initialize(app, &block)
+        def initialize(app)
           @app, @config = app, Config.new
 
-          yield config if block_given?
+          yield @config if block_given?
         end
 
         ##
@@ -49,25 +47,21 @@ module Rack
         # @param [Hash] env [Rack Env Hash which contains headers etc..]
         #
         def call(env)
-          self.dup.call!(env)
+          # self.dup.call!(env)
+          dup.call!(env)
         end
 
         ##
         # call! Method
         #
-        # Using ! because this method isn't a pure function
-        # Creating for example @request & @allowed_messages instance variables
-        #
-        # Also this is a threadsafe approach for rack
-        #
         # @param [Hash] env [Rack Env Hash which contains headers etc..]
         #
         def call!(env)
           env = env.dup
-          request = Request.new(env, config)
+          request = Request.new(env, @config)
 
           if request.valid?
-            app.call(env)
+            @app.call(env)
           else
             response = Response.new('Unauthorized', 401, 'Content-Type' => 'text/html')
             response.finish

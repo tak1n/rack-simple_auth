@@ -17,14 +17,14 @@ module Rack
         # @return [FalseClass] if request is not authorized or HTTP_AUTHORIZATION Header is not set
         #
         def valid?
-          log
+          # log
 
           return false if empty_header? || !authorized?
 
           true
         end
 
-      private
+        private
 
         ##
         # Builds Array of allowed message hashs between tolerance via {#message}

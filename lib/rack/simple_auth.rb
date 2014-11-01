@@ -4,7 +4,6 @@ require 'rack/simple_auth/logger'
 # HMAC utilities
 require 'rack/simple_auth/hmac/config'
 require 'rack/simple_auth/hmac/request'
-require 'rack/simple_auth/hmac/response'
 require 'rack/simple_auth/hmac/middleware'
 
 require 'json'

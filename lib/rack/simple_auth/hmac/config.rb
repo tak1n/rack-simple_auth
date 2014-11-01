@@ -36,7 +36,7 @@ module Rack
         # @param [Symbol] name
         # @param [Array] args
         #
-        def method_missing(name, *args)
+        def method_missing(name, *_args)
           fail "Unknown option #{name.to_s.gsub!('=', '')}"
         end
 
