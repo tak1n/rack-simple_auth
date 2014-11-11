@@ -1,7 +1,6 @@
 task :console do
-  require 'irb'
-  require 'irb/completion'
-  require 'rack/simple_auth'
+  require 'pry'
+  require 'rack/blogengine'
   ARGV.clear
-  IRB.start
+  Pry.start
 end
