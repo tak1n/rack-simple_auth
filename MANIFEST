@@ -14,7 +14,6 @@ lib/rack/simple_auth.rb
 lib/rack/simple_auth/hmac/config.rb
 lib/rack/simple_auth/hmac/middleware.rb
 lib/rack/simple_auth/hmac/request.rb
-lib/rack/simple_auth/hmac/response.rb
 lib/rack/simple_auth/logger.rb
 lib/rack/simple_auth/version.rb
 rack-simple_auth.gemspec
