@@ -1,4 +1,4 @@
-ENV['RACK_ENV'] = 'spec'
+ENV['RACK_ENV'] = 'test'
 
 require 'simplecov'
 require 'coveralls'
@@ -8,16 +8,14 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
   Coveralls::SimpleCov::Formatter
 ]
 
-if ENV['COVERAGE']
-  SimpleCov.start do
-    project_name 'rack-simple_auth'
-    add_filter '/spec/'
-    add_filter '/pkg/'
-    add_filter '/spec/'
-    add_filter '/features/'
-    add_filter '/doc/'
-  end
-end
+SimpleCov.start do
+  project_name 'rack-simple_auth'
+  add_filter '/spec/'
+  add_filter '/pkg/'
+  add_filter '/spec/'
+  add_filter '/features/'
+  add_filter '/doc/'
+end if ENV['COVERAGE']
 
 # Minispec
 gem 'minitest'
