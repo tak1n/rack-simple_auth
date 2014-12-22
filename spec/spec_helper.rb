@@ -17,14 +17,15 @@ SimpleCov.start do
   add_filter '/doc/'
 end if ENV['COVERAGE']
 
-# Minispec
 gem 'minitest'
 require 'minitest/autorun'
-require 'minitest/pride'
-# require 'minitest/reporters'
+require 'minitest/reporters'
 
-# reporter_options = { color: true, slow_count: 5 }
-# Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(reporter_options)]
+Minitest::Reporters.use!(
+  Minitest::Reporters::SpecReporter.new,
+  ENV,
+  Minitest.backtrace_filter
+)
 
 # Rack spec Methods
 require 'rack/test'
