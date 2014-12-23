@@ -1,15 +1,6 @@
 LICENSE
-MANIFEST
+HISTORY
 README.rdoc
-checksum/rack-simple_auth-0.0.9.gem.sha512
-checksum/rack-simple_auth-0.1.0.gem.sha512
-checksum/rack-simple_auth-0.1.1.gem.sha512
-checksum/rack-simple_auth-0.1.2.gem.sha512
-checksum/rack-simple_auth-1.0.0.gem.sha512
-checksum/rack-simple_auth-1.0.0rc.gem.sha512
-checksum/rack-simple_auth-1.0.1.gem.sha512
-checksum/rack-simple_auth-1.0.3.gem.sha512
-checksum/rack-simple_auth-1.0.4.gem.sha512
 lib/rack/simple_auth.rb
 lib/rack/simple_auth/hmac/config.rb
 lib/rack/simple_auth/hmac/middleware.rb
