@@ -20,8 +20,8 @@ Or install it yourself as:
 
 == Gem Status
 
-{<img src="https://travis-ci.org/Benny1992/rack-simple_auth.svg?branch=v1.0.0rc" alt="Build Status" />}[https://travis-ci.org/Benny1992/rack-simple_auth]
-{<img src="https://coveralls.io/repos/Benny1992/rack-simple_auth/badge.png" alt="Code Coverage" />}[https://coveralls.io/r/Benny1992/rack-simple_auth]
+{<img src="https://travis-ci.org/tak1n/rack-simple_auth.svg?branch=v1.0.0rc" alt="Build Status" />}[https://travis-ci.org/Benny1992/rack-simple_auth]
+{<img src="https://coveralls.io/repos/tak1n/rack-simple_auth/badge.svg?branch=master" alt="Coverage Status" />}[https://coveralls.io/r/tak1n/rack-simple_auth?branch=master]
 {<img src="https://badge.fury.io/rb/rack-simple_auth.png" alt="Gem Version" />}[http://badge.fury.io/rb/rack-simple_auth]
 {<img src="https://gemnasium.com/Benny1992/rack-simple_auth.png" alt="Dependency Status" />}[https://gemnasium.com/Benny1992/rack-simple_auth]
 {<img src="https://www.codeship.io/projects/f2d9d790-b0fe-0131-3fd5-025f180094b5/status" alt="Build Status" />}[https://www.codeship.io/projects/f2d9d790-b0fe-0131-3fd5-025f180094b5/status]
