@@ -15,6 +15,7 @@ SimpleCov.start do
   add_filter '/spec/'
   add_filter '/features/'
   add_filter '/doc/'
+  add_filter '/.gem/'
 end if ENV['COVERAGE']
 
 gem 'minitest'
