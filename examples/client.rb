@@ -16,7 +16,7 @@ hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), 'test_secret', mes
 req.add_field("AUTHORIZATION", "#{hash}:test_signature")
 
 res = Net::HTTP.new(url.host, url.port).start do |http|
-    http.request(req)
+  http.request(req)
 end
 
 puts res.body
