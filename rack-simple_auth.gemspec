@@ -6,15 +6,15 @@ require 'rack/simple_auth/version'
 Gem::Specification.new do |spec|
   spec.name          = "rack-simple_auth"
   spec.version       = Rack::SimpleAuth::VERSION
-  spec.authors       = ["Benny1992"]
-  spec.email         = ["r3qnbenni@gmail.com"]
+  spec.authors       = ["Benny Klotz"]
+  spec.email         = ["benny.klotz92@gmail.com"]
   spec.summary       = %q{SimpleAuth HMAC authentication}
   spec.description   = spec.summary
-  spec.homepage      = "https://github.com/Benny1992/rack-simple_auth"
+  spec.homepage      = "https://github.com/tak1n/rack-simple_auth"
   spec.license       = "MIT"
 
   spec.post_install_message = 'Please report any issues at: ' \
-      'https://github.com/Benny1992/rack-simple_auth/issues/new'
+      'https://github.com/tak1n/rack-simple_auth/issues/new'
 
   spec.files = File.read(File.expand_path('../MANIFEST', __FILE__)).split("\n")
   spec.require_paths = ["lib"]
