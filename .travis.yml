@@ -8,15 +8,12 @@ before_install:
   - gem install bundler
 
 rvm:
-  - 1.9.3
   - 2.0.0
-  - 2.1.0
-  - 2.1.1
-  - 2.1.2
-  - 2.2.0
+  - 2.1.5
+  - 2.2.4
   - ruby-head
   - jruby
-  - rbx-2
+  - rbx-3
 
 matrix:
   allow_failures:
@@ -28,7 +25,7 @@ script:
 notifications:
   email:
     recipients:
-      - r3qnbenni@gmail.com
+      - benny.klotz92@gmail.com
     email:
       on_failure: change
       on_success: change
