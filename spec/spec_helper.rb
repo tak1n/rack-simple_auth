@@ -1,22 +1,5 @@
 ENV['RACK_ENV'] = 'test'
 
-require 'simplecov'
-
-SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
-  SimpleCov::Formatter::HTMLFormatter,
-]
-
-SimpleCov.start do
-  project_name 'rack-simple_auth'
-  add_filter '/spec/'
-  add_filter '/pkg/'
-  add_filter '/spec/'
-  add_filter '/features/'
-  add_filter '/doc/'
-  add_filter '/.gem/'
-end if ENV['COVERAGE']
-
-gem 'minitest'
 require 'minitest/autorun'
 require 'minitest/reporters'
 
