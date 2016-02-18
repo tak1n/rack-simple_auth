@@ -20,12 +20,12 @@ Or install it yourself as:
 
 == Gem Status
 
-{<img src="https://travis-ci.org/tak1n/rack-simple_auth.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/tak1n/rack-simple_auth]
-{<img src="https://www.codeship.io/projects/f2d9d790-b0fe-0131-3fd5-025f180094b5/status" alt="Build Status" />}[https://www.codeship.io/projects/f2d9d790-b0fe-0131-3fd5-025f180094b5/status]
 {<img src="https://badge.fury.io/rb/rack-simple_auth.png" alt="Gem Version" />}[http://badge.fury.io/rb/rack-simple_auth]
+{<img src="https://travis-ci.org/tak1n/rack-simple_auth.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/tak1n/rack-simple_auth]
+{<img src="https://codeclimate.com/github/tak1n/rack-simple_auth/badges/gpa.svg" />}[https://codeclimate.com/github/tak1n/rack-simple_auth]
+{<img src="https://codeclimate.com/github/tak1n/rack-simple_auth/badges/coverage.svg" />}[https://codeclimate.com/github/tak1n/rack-simple_auth/coverage]
+{<img src="http://inch-ci.org/github/tak1n/rack-simple_auth.svg?branch=master" alt="Inline docs" />}[http://inch-ci.org/github/tak1n/rack-simple_auth]
 {<img src="https://gemnasium.com/Benny1992/rack-simple_auth.png" alt="Dependency Status" />}[https://gemnasium.com/Benny1992/rack-simple_auth]
-{<img src="https://codeclimate.com/github/Benny1992/rack-simple_auth/badges/coverage.svg" />}[https://codeclimate.com/github/Benny1992/rack-simple_auth/coverage]
-{<img src="https://codeclimate.com/github/Benny1992/rack-simple_auth.png" />}[https://codeclimate.com/github/Benny1992/rack-simple_auth]
 
 == Usage
 
