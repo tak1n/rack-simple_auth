@@ -17,7 +17,7 @@ matrix:
     - rvm: jruby-9.2.11.0
 
 script:
-  - CODECLIMATE_REPO_TOKEN=44310fa9af74b45d5b6165d24ddeb268754f46f6de57e1bf5b4c3b997bb6c812 bundle exec bin/spec_runner
+        - CODECLIMATE_REPO_TOKEN=44310fa9af74b45d5b6165d24ddeb268754f46f6de57e1bf5b4c3b997bb6c812 bundle exec rake test:spec
 
 addons:
   code_climate:

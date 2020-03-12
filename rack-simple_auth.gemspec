@@ -19,8 +19,7 @@ Gem::Specification.new do |spec|
   spec.files = File.read(File.expand_path('../MANIFEST', __FILE__)).split("\n")
   spec.require_paths = ["lib"]
 
-  spec.required_ruby_version     = '>= 1.8.7'
-
+  spec.required_ruby_version = '>= 2.5.7'
   spec.add_runtime_dependency 'rack', '~> 2.2'
 
   spec.add_development_dependency 'bundler', '~> 2.1'
